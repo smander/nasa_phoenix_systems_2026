@@ -1,0 +1,824 @@
+<title>Polar Window</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one product view. A full-width lunar sky (always black, like the real lunar sky) is the hero; a ribbon scrubber and a row of big numerals sit under it; compare, context and mission sections follow on a quiet ground with hairline dividers. */
+:root {
+  --bg: #07090D; --panel: #0E1218; --panel-2: #151B25; --line: rgba(220,230,245,.09); --line-2: rgba(220,230,245,.16);
+  --fg: #E9EDF3; --muted: #939DAD; --faint: #626C7C;
+  --sun: #FFB547; --earth: #4FA8FF; --both: #33D1A5; --none: #1B212B;
+  --good: #33D1A5; --ok: #F2C14E; --poor: #FF6E5E;
+  --focus: #8CC8FF;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --text: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --bg: #F3F4F6; --panel: #FFFFFF; --panel-2: #EBEEF2; --line: rgba(15,22,34,.10); --line-2: rgba(15,22,34,.18);
+  --fg: #0E1420; --muted: #586274; --faint: #8B94A3;
+  --sun: #D26A00; --earth: #0F6CC9; --both: #0B8F6C; --none: #DADFE6;
+  --good: #0B8F6C; --ok: #A87800; --poor: #CC3B2B; --focus: #0F6CC9;
+  color-scheme: light;
+} }
+:root[data-theme="light"] {
+  --bg: #F3F4F6; --panel: #FFFFFF; --panel-2: #EBEEF2; --line: rgba(15,22,34,.10); --line-2: rgba(15,22,34,.18);
+  --fg: #0E1420; --muted: #586274; --faint: #8B94A3;
+  --sun: #D26A00; --earth: #0F6CC9; --both: #0B8F6C; --none: #DADFE6;
+  --good: #0B8F6C; --ok: #A87800; --poor: #CC3B2B; --focus: #0F6CC9;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--text); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1280px; margin: 0 auto; padding-inline: 24px; }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-stretch: 118%; font-weight: 650; letter-spacing: -.005em; text-wrap: balance; }
+h2 { font-size: 22px; line-height: 1.15; }
+h3 { font-size: 15px; }
+p { margin: 0; max-width: 66ch; }
+.eyebrow { font-family: var(--display); font-stretch: 112%; font-size: 11.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+
+/* App bar */
+.appbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.appbar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; padding-block: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+.brand-name { font-family: var(--display); font-stretch: 125%; font-weight: 750; font-size: 17px; letter-spacing: .02em; }
+.brand-sub { font-size: 12px; color: var(--muted); }
+.field { display: flex; align-items: center; gap: 8px; }
+.select { appearance: none; -webkit-appearance: none; background: var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23939DAD' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center; border: 1px solid var(--line-2); border-radius: 9px; padding: 7px 34px 7px 12px; min-height: 38px; font-weight: 600; cursor: pointer; }
+.seg { display: inline-flex; padding: 3px; gap: 2px; background: var(--panel); border: 1px solid var(--line-2); border-radius: 10px; }
+.seg button { border: 0; background: transparent; padding: 6px 12px; min-height: 32px; border-radius: 7px; cursor: pointer; color: var(--muted); font-weight: 550; font-size: 14px; }
+.seg button[aria-pressed="true"] { background: var(--panel-2); color: var(--fg); box-shadow: inset 0 0 0 1px var(--line-2); }
+.seg button:hover { color: var(--fg); }
+
+/* Sky hero */
+.sky { position: relative; background: #03050A; }
+.sky canvas { display: block; width: 100%; height: clamp(340px, 40vw, 540px); }
+.sky-over { position: absolute; inset: 0; pointer-events: none; }
+.sky-over .wrap { height: 100%; position: relative; }
+.sky-head { position: absolute; left: 24px; top: 24px; display: grid; gap: 8px; max-width: min(640px, 70%); text-shadow: 0 1px 14px rgba(0,0,0,.7); }
+.sky-head h1 { font-size: clamp(26px, 3.4vw, 44px); line-height: 1.02; font-stretch: 122%; font-weight: 720; color: #F4F6FA; }
+.sky-head .sub { font-size: 14.5px; color: rgba(230,236,245,.8); }
+.pill { display: inline-flex; align-items: center; gap: 8px; font-family: var(--display); font-stretch: 112%; font-size: 12px; font-weight: 650; letter-spacing: .1em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; width: max-content; background: rgba(10,14,22,.65); border: 1px solid rgba(255,255,255,.08); }
+.pill i { width: 8px; height: 8px; border-radius: 50%; display: block; background: currentColor; box-shadow: 0 0 10px currentColor; }
+.sky-time { position: absolute; right: 24px; top: 26px; text-align: right; color: rgba(230,236,245,.8); font-family: var(--mono); font-size: 14px; text-shadow: 0 1px 10px rgba(0,0,0,.7); }
+.sky-time b { display: block; font-family: var(--display); font-stretch: 112%; font-size: 20px; color: #F4F6FA; font-weight: 650; }
+.sky-note { position: absolute; right: 24px; bottom: 34px; font-size: 11.5px; color: rgba(210,218,230,.55); font-family: var(--mono); }
+
+/* Scrubber */
+.scrub { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; padding-block: 16px 4px; }
+.play { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line-2); background: var(--panel); display: grid; place-items: center; cursor: pointer; }
+.play:hover { border-color: var(--muted); }
+#scrub { cursor: ew-resize; touch-action: none; border-radius: 8px; }
+#scrub svg { display: block; width: 100%; }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: 18px 28px; border-bottom: 1px solid var(--line); }
+.stat { padding: 4px 22px 4px 0; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.stat + .stat { padding-left: 22px; border-left: 1px solid var(--line); }
+.stat .head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.big { font-family: var(--display); font-stretch: 110%; font-weight: 650; font-size: clamp(32px, 3.3vw, 44px); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.big small { font-size: .42em; font-weight: 550; color: var(--muted); letter-spacing: 0; margin-left: 5px; }
+.stat p { font-size: 13.5px; color: var(--muted); }
+.stat .state { font-size: 13px; font-weight: 650; }
+.range { width: 100%; accent-color: var(--earth); }
+.dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; font-size: 13px; color: var(--muted); margin: 0; }
+.dl dd { margin: 0; text-align: right; color: var(--fg); font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* Sections */
+.section { padding-block: 44px 8px; display: grid; gap: 18px; }
+.section-head { display: flex; flex-wrap: wrap; gap: 8px 32px; align-items: end; justify-content: space-between; }
+.section-head p { color: var(--muted); font-size: 14.5px; max-width: 60ch; }
+.title { display: grid; gap: 4px; }
+.teach { display: none; padding: 14px 18px; border-radius: 12px; background: color-mix(in srgb, var(--earth) 10%, transparent); color: var(--fg); font-size: 14.5px; max-width: 86ch; }
+body[data-mode="teach"] .teach { display: block; }
+body[data-mode="explore"] .plan-only, body[data-mode="teach"] .plan-only { display: none; }
+
+/* Compare */
+.cmp { display: grid; }
+.cmp-row { display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr) repeat(4, 76px); align-items: center; gap: 0 16px; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.cmp-row.head { border-bottom: 1px solid var(--line-2); padding-block: 6px; }
+.cmp-row.head button { all: unset; cursor: pointer; text-align: right; font-family: var(--display); font-stretch: 112%; font-size: 11.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.cmp-row.head button[aria-pressed="true"] { color: var(--fg); }
+.cmp-row.head button:focus-visible { outline: 2px solid var(--focus); }
+.cmp-row.sel { background: var(--panel); border-radius: 10px; }
+.cmp-row:not(.head):hover { background: var(--panel); cursor: pointer; border-radius: 10px; }
+.cmp-name { font-weight: 650; font-size: 14.5px; line-height: 1.25; }
+.cmp-name small { display: block; font-weight: 400; font-size: 12.5px; color: var(--muted); }
+.cmp-val { text-align: right; font-family: var(--display); font-stretch: 106%; font-weight: 650; font-size: 18px; font-variant-numeric: tabular-nums; }
+.cmp-val.good { color: var(--good); } .cmp-val.ok { color: var(--fg); } .cmp-val.poor { color: var(--poor); }
+.cmp-bar svg { display: block; width: 100%; }
+.key { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+.key span { display: inline-flex; align-items: center; gap: 6px; }
+.key i { width: 14px; height: 10px; border-radius: 2px; display: inline-block; }
+
+/* Context */
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.panel svg { display: block; width: 100%; }
+.panel p { font-size: 14px; color: var(--muted); }
+
+/* Mission */
+.mission { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.controls { display: flex; flex-wrap: wrap; gap: 14px 32px; align-items: end; }
+.ctl { display: grid; gap: 8px; }
+.slider { display: flex; align-items: center; gap: 10px; }
+.slider input { width: 170px; accent-color: var(--earth); }
+.rules { display: grid; }
+.rule { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 2px 12px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.rule:last-child { border-bottom: 0; }
+.rule .ic { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; margin-top: 1px; }
+.rule .ic.ok { background: color-mix(in srgb, var(--good) 18%, transparent); color: var(--good); }
+.rule .ic.bad { background: color-mix(in srgb, var(--poor) 18%, transparent); color: var(--poor); }
+.rule .nm { font-weight: 650; }
+.rule .nm .mono { font-weight: 400; font-size: 12.5px; color: var(--muted); margin-left: 8px; }
+.rule .kind { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.rule .why { grid-column: 2 / 4; font-size: 13.5px; color: var(--muted); }
+.term { background: #05070B; border: 1px solid rgba(220,230,245,.14); border-radius: 16px; overflow: hidden; min-width: 0; }
+.term-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid rgba(220,230,245,.1); font-family: var(--mono); font-size: 12.5px; color: #9AA4B4; }
+.term-bar .dots { display: flex; gap: 6px; } .term-bar .dots i { width: 10px; height: 10px; border-radius: 50%; background: #2A313C; display: block; }
+.term pre { margin: 0; padding: 14px 16px; overflow: auto; max-height: 340px; font-family: var(--mono); font-size: 12.5px; line-height: 1.6; color: #D9DFE8; }
+.term pre.out { border-top: 1px solid rgba(220,230,245,.1); max-height: none; background: #080B11; }
+.term .k { color: #7CC2FF; } .term .c { color: #66727F; } .term .t { color: #FFC56B; } .term .g { color: #4FDDB4; } .term .r { color: #FF8577; }
+
+/* Step 1: choose the point */
+.step1 { padding-block: 34px 34px; border-bottom: 1px solid var(--line); }
+.step1 .wrap { display: grid; gap: 18px; }
+.pick { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.picklist { display: grid; gap: 8px; }
+.pickitem { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; text-align: left; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; }
+.pickitem:hover { border-color: var(--line-2); }
+.pickitem[aria-pressed="true"] { border-color: var(--sun); box-shadow: 0 0 0 1px var(--sun) inset; }
+.pickitem .nm { font-weight: 650; font-size: 15px; }
+.pickitem .meta { font-size: 12.5px; color: var(--muted); }
+.pickitem .nums { text-align: right; font-family: var(--display); font-stretch: 106%; font-weight: 650; font-size: 15px; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.pickitem .nums span { display: block; }
+.pickitem .bar { grid-column: 1 / -1; }
+.pickitem .bar svg { display: block; width: 100%; }
+.step-no { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--fg); color: var(--bg); font-family: var(--display); font-weight: 700; font-size: 14px; margin-right: 10px; vertical-align: 3px; }
+.step2-head { padding-block: 30px 20px; display: grid; gap: 6px; }
+.step2-head h2 { font-size: clamp(24px, 2.6vw, 32px); }
+.step2-head .sub { color: var(--muted); font-size: 14.5px; display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.step2-head .sub b { color: var(--fg); font-weight: 600; }
+.cta { display: inline-flex; align-items: center; gap: 8px; width: max-content; padding: 10px 16px; border-radius: 10px; background: var(--fg); color: var(--bg); font-weight: 650; text-decoration: none; }
+.cta:hover { opacity: .9; }
+
+/* Reference */
+details.ref { border-top: 1px solid var(--line); margin-top: 44px; padding-block: 18px; }
+details.ref summary { cursor: pointer; font-family: var(--display); font-stretch: 112%; font-weight: 650; font-size: 16px; }
+.tablewrap { overflow-x: auto; margin-top: 14px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--display); font-stretch: 112%; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+td:first-child { font-weight: 600; }
+footer { border-top: 1px solid var(--line); padding-block: 22px 40px; color: var(--muted); font-size: 13px; }
+
+@media (max-width: 1000px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; }
+  .stat:nth-child(3) { padding-left: 0; border-left: 0; }
+  .two, .mission, .pick { grid-template-columns: minmax(0, 1fr); }
+  .cmp-row { grid-template-columns: minmax(130px, 170px) minmax(0, 1fr) repeat(2, 60px); }
+  .cmp-row .hide-md { display: none; }
+}
+@media (max-width: 600px) {
+  .wrap { padding-inline: 16px; }
+  .sky-head { left: 16px; top: 16px; max-width: 92%; } .sky-time { right: 16px; top: auto; bottom: 34px; text-align: right; } .sky-note { display: none; }
+  .stats { grid-template-columns: minmax(0, 1fr); }
+  .stat + .stat { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); padding-top: 16px; }
+  .cmp-row { grid-template-columns: minmax(0, 1fr) 56px 56px; row-gap: 8px; }
+  .cmp-row .cmp-bar { grid-column: 1 / -1; grid-row: 2; }
+  .cmp-row.head .eyebrow.bar-h { display: none; }
+  .brand-sub { display: none; }
+  .slider input { width: 130px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="appbar">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <defs><radialGradient id="bm-sun"><stop offset="0" stop-color="#FFF4D6"/><stop offset=".55" stop-color="#FFB547"/><stop offset="1" stop-color="#FFB547" stop-opacity="0"/></radialGradient></defs>
+        <rect width="34" height="34" rx="9" fill="#05070B"/>
+        <circle cx="11" cy="17" r="7.5" fill="url(#bm-sun)"/>
+        <circle cx="23.5" cy="11" r="4.2" fill="#4FA8FF"/>
+        <path d="M2 25 L9 21 L13 23 L19 18 L25 22 L32 20 L32 32 L2 32 Z" fill="#2A303A"/>
+        <path d="M2 25 L9 21 L13 23 L19 18" fill="none" stroke="#FFC56B" stroke-width="1.2"/>
+      </svg>
+      <div><div class="brand-name">POLAR WINDOW</div><div class="brand-sub">Lunar south pole Sun &amp; Earth planner</div></div>
+    </div>
+    <label class="field"><span class="eyebrow">Landing point</span><select class="select" id="site" aria-label="Landing point"></select></label>
+    <div class="seg" role="group" aria-label="Audience mode">
+      <button type="button" id="mode-explore" data-mode="explore" aria-pressed="false">Explore</button>
+      <button type="button" id="mode-teach" data-mode="teach" aria-pressed="false">Teach</button>
+      <button type="button" id="mode-plan" data-mode="plan" aria-pressed="true">Plan</button>
+    </div>
+    <div class="seg" role="group" aria-label="Theme">
+      <button type="button" id="th-system" data-theme-set="system" aria-pressed="true">Auto</button>
+      <button type="button" id="th-dark" data-theme-set="dark" aria-pressed="false">Dark</button>
+      <button type="button" id="th-light" data-theme-set="light" aria-pressed="false">Light</button>
+    </div>
+  </div>
+</header>
+
+<section class="step1" aria-labelledby="s1-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="title"><span class="eyebrow">Step 1 of 2</span><h2 id="s1-title"><span class="step-no">1</span>Choose where to land</h2></div>
+      <p>Pick a candidate landing point on the south pole map or from the list. Polar Window then works out sunlight, solar energy and Earth contact for that exact point.</p>
+    </div>
+    <div class="pick">
+      <div class="panel">
+        <div id="map"></div>
+        <p>LOLA relief shading (terrain shape, not lighting), 0° longitude at the top. The amber ray points toward the Sun at the selected time; the blue dot marks the direction of Earth. Click anywhere to choose a point: the product computes any point from the terrain data, and this mockup snaps to the nearest analysed site.</p>
+      </div>
+      <div style="display:grid;gap:12px;min-width:0">
+        <div class="picklist" id="picklist" role="group" aria-label="Candidate landing points"></div>
+        <a class="cta" href="#analysis">See results for <span id="cta-name">this point</span> <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap step2-head" id="analysis">
+  <span class="eyebrow">Step 2 of 2</span>
+  <h2 id="an-title"><span class="step-no">2</span>Results</h2>
+  <div class="sub" id="an-sub"></div>
+</div>
+
+<section class="sky" aria-label="Lunar sky at the selected site">
+  <canvas id="sky" role="img" aria-label="Lunar sky panorama"></canvas>
+  <div class="sky-over"><div class="wrap">
+    <div class="sky-head" aria-live="polite">
+      <span class="pill" id="sky-pill"><i></i><span></span></span>
+      <h1 id="sky-title">Lunar sky</h1>
+      <div class="sub" id="sky-sub"></div>
+    </div>
+    <div class="sky-time" id="sky-time"></div>
+    <div class="sky-note" id="sky-note"></div>
+  </div></div>
+</section>
+
+<main class="wrap">
+  <div class="scrub">
+    <button class="play" type="button" id="play" aria-label="Play the month">
+      <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path id="play-icon" d="M3 1.5 L12 7 L3 12.5 Z" fill="currentColor"></path></svg>
+    </button>
+    <div id="scrub" tabindex="0" role="slider" aria-label="Time" aria-valuemin="0"></div>
+  </div>
+
+  <section class="stats" aria-label="Current state">
+    <div class="stat" id="st-sun"></div>
+    <div class="stat" id="st-earth"></div>
+    <div class="stat" id="st-energy"></div>
+    <div class="stat" id="st-mast">
+      <div class="head"><span class="eyebrow">Observer height</span></div>
+      <div class="big" id="mast-big">2<small>m</small></div>
+      <input class="range" type="range" id="mast" min="0" max="20" step="1" value="2" aria-label="Observer height in metres">
+      <p>Lander deck at 2 m; vertical solar masts reach 10–20 m. A higher observer sees over more of the terrain.</p>
+    </div>
+  </section>
+
+  <p class="teach" style="margin-top:20px">The Moon has no air, so its sky stays black even with the Sun up. At the south pole the Sun never climbs more than about 1.5° and circles the horizon once every 29.5 days, so a small ridge can hide it for days. Earth hangs in almost the same spot all month but bobs a few degrees up and down; that is why radio contact comes and goes.</p>
+
+  <section class="section" aria-labelledby="ctx-title">
+    <div class="section-head"><div class="title"><span class="eyebrow">Day by day</span><h2 id="ctx-title">Energy and Earth contact through the month</h2></div></div>
+    <div class="two">
+      <div class="panel">
+        <h3>Solar energy and contact hours per day</h3>
+        <div id="energy"></div>
+        <p id="energy-cap"></p>
+      </div>
+      <div class="panel">
+        <h3>Earth's monthly wander in the lunar sky</h3>
+        <div id="wander"></div>
+        <p id="wander-cap"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cmp-title">
+    <div class="section-head">
+      <div class="title"><span class="eyebrow">Compare</span><h2 id="cmp-title">How this point ranks against the others</h2></div>
+      <div class="key" aria-label="Colour key"><span><i style="background:var(--both)"></i>Sun and Earth up</span><span><i style="background:var(--sun)"></i>Sun only</span><span><i style="background:var(--earth)"></i>Earth only</span><span><i style="background:var(--none)"></i>Neither</span></div>
+    </div>
+    <div class="cmp" id="cmp" role="table" aria-label="Site comparison"></div>
+    <p class="muted" style="font-size:13px">Green numbers mark strong sites (Sun ≥ 80%, Earth ≥ 80%, longest night ≤ 3.5 days); red marks weak ones (Sun &lt; 50%, Earth &lt; 40%, night &gt; 7 days). Region sites use bounding-box midpoints on 240 m terrain; published peak values such as 88% at Connecting Ridge come from 20 m terrain and multi-year averages.</p>
+  </section>
+
+  <p class="teach" style="margin-top:20px">Each bar is one site across January 2027. Green means the lander has both sunlight and a radio line to Earth. Long grey gaps are the hard part of a polar mission: no power and no contact at the same time.</p>
+
+  <section class="section plan-only" aria-labelledby="ms-title">
+    <div class="section-head">
+      <div class="title"><span class="eyebrow">Mission check · SAPLE</span><h2 id="ms-title">Do the mission rules hold?</h2></div>
+      <p>The sky events during the stay become a process model. Each mission rule is a property SAPLE verifies; a violation comes back as the first hour it fails.</p>
+    </div>
+    <div class="controls">
+      <div class="ctl"><span class="eyebrow">Stay length</span><div class="seg" id="len" role="group" aria-label="Stay length"></div></div>
+      <div class="ctl"><label class="eyebrow" for="reserve">Battery covers darkness up to</label><div class="slider"><input type="range" id="reserve" min="0" max="120" step="2" value="50"><span class="mono" id="reserve-label">50 h</span></div></div>
+      <div class="ctl"><label class="eyebrow" for="go">Earth contact needed</label><div class="slider"><input type="range" id="go" min="0" max="100" step="5" value="25"><span class="mono" id="go-label">25%</span></div></div>
+    </div>
+    <div class="ctl"><span class="eyebrow" id="strip-label">Landing date</span><div id="strip"></div>
+      <div class="key"><span><i style="background:var(--both)"></i><span id="key-go">Sunlit stay with Earth contact</span></span><span><i style="background:var(--sun)"></i>Sunlit stay, too little contact</span><span><i style="background:var(--none)"></i>A dark spell during the stay</span><span>Click a day to land then</span></div>
+    </div>
+    <div class="mission">
+      <div style="display:grid;gap:16px;min-width:0">
+        <div class="panel" style="padding:16px"><div id="window"></div></div>
+        <div class="rules" id="rules"></div>
+      </div>
+      <div style="display:grid;gap:12px;min-width:0">
+        <div class="term">
+          <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span id="spl-name">polar_window.sbl</span></div>
+          <pre id="spl" tabindex="0" aria-label="Generated SPL model"></pre>
+          <pre class="out" id="spl-out" aria-label="Verification output preview"></pre>
+        </div>
+        <p class="muted" style="font-size:13px">Preview: verdicts are computed in this page from the same hourly data. In the product the model goes to <span class="mono">saple analyze</span>, and its counterexample trace is drawn on the timeline.</p>
+      </div>
+    </div>
+  </section>
+
+  <details class="ref">
+    <summary>Design reference: every property that changes, and the control that owns it</summary>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Property</th><th>Range at the south pole</th><th>Changes with</th><th>Control</th></tr></thead>
+      <tbody>
+        <tr><td>Sun azimuth</td><td>full circle every 29.53 days</td><td>time, site</td><td>time scrubber</td></tr>
+        <tr><td>Sun elevation</td><td>about ±1.6° at the pole, up to ~5° at 85°S</td><td>time, site, season</td><td>time scrubber</td></tr>
+        <tr><td>Earth azimuth and elevation</td><td>±8° and about ±7° around the sub-Earth direction</td><td>time (27.2–27.6-day cycles), site</td><td>time scrubber</td></tr>
+        <tr><td>Earth phase seen from the Moon</td><td>new to full, opposite to the Moon's phase seen from Earth</td><td>time</td><td>time scrubber</td></tr>
+        <tr><td>Sun and Earth disc size</td><td>0.26–0.27° and 0.90–0.99° radius</td><td>distances</td><td>—</td></tr>
+        <tr><td>Terrain horizon</td><td>−5° to +14° by direction</td><td>site, observer height</td><td>site picker, height slider</td></tr>
+        <tr><td>Sun / Earth above terrain</td><td>yes or no each hour</td><td>everything above</td><td>advanced: disc threshold, minimum Earth elevation</td></tr>
+        <tr><td>Solar power</td><td>0 to ~420 W/m² electrical (vertical array, 30%)</td><td>Sun elevation and visibility</td><td>advanced: panel model, efficiency</td></tr>
+        <tr><td>Sun %, Earth %, both %, longest night, longest Earth gap</td><td>over the date range</td><td>site, dates, height</td><td>site picker, date range</td></tr>
+        <tr><td>Mission window, battery reserve, contact threshold</td><td>6.5–14 days; hours; %</td><td>user</td><td>landing strip, sliders</td></tr>
+        <tr><td>Rule verdicts</td><td>holds, or violated at an hour</td><td>everything above</td><td>—</td></tr>
+      </tbody>
+    </table></div>
+  </details>
+</main>
+
+<footer><div class="wrap" style="display:grid;gap:6px">
+  <div>Sun and Earth: astronomy-engine 2.1.19 with the IAU lunar rotation model, light-time, aberration and topocentric parallax; agrees with JPL Horizons to within 0.004°. Earth visible means line of sight to any part of Earth's disc, not a ground-station pass.</div>
+  <div>Terrain: NASA LRO LOLA ldem_75s_240m, 720 directions, sight lines to 300 km. Sites: Artemis candidate regions use bounding-box midpoints (NASA GSFC archive, Zenodo 10.5281/zenodo.17954508); Connecting Ridge C1 and the Shackleton rim point follow Gläser et al. 2018. Data window January 2027, hourly.</div>
+</div></footer>
+
+<script type="application/json" id="mockdata">__MOCKDATA__</script>
+<script>
+(function () {
+  'use strict';
+  var D = JSON.parse(document.getElementById('mockdata').textContent);
+  var R = 1737400, D2R = Math.PI / 180, R2D = 180 / Math.PI, N = D.n, T0 = Date.parse(D.t0), R_SUN_1AU = 0.26646;
+  var NS = 'http://www.w3.org/2000/svg';
+  var state = { site: 0, t: 0, mast: 2, playing: false, len: 6.5, reserve: 50, go: 25, start: null, sort: 'sun', mode: 'plan' };
+
+  // ---------- helpers ----------
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function dt(i) { return new Date(T0 + i * 3600e3); }
+  function longDate(i) { var d = dt(i); return MON[d.getUTCMonth()] + ' ' + d.getUTCDate() + ', ' + d.getUTCFullYear(); }
+  function clock(i) { var d = dt(i); return pad(d.getUTCHours()) + ':00 UTC'; }
+  function shortDate(i) { var d = dt(i); return MON[d.getUTCMonth()] + ' ' + d.getUTCDate() + ' ' + pad(d.getUTCHours()) + ':00'; }
+  function sgn(v, dp) { return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(dp === undefined ? 2 : dp); }
+  function hrs(h) { return h >= 48 ? (h / 24).toFixed(1) + ' d' : h + ' h'; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function wrap180(a) { return ((a % 360) + 540) % 360 - 180; }
+  function el(tag, attrs, parent) { var n = document.createElementNS(NS, tag); for (var k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; }
+  function txt(parent, x, y, s, attrs) { var t = el('text', Object.assign({ x: x, y: y, fill: 'var(--muted)', 'font-size': 12, 'font-family': 'var(--mono)' }, attrs || {}), parent); t.textContent = s; return t; }
+  function svgFor(host, h, label) { var w = Math.max(240, Math.round(host.clientWidth)); var s = el('svg', { viewBox: '0 0 ' + w + ' ' + h, width: w, height: h, role: 'img', 'aria-label': label }); host.innerHTML = ''; host.appendChild(s); return { s: s, w: w, h: h }; }
+
+  // ---------- model ----------
+  var maskCache = {}, evalCache = {};
+  function maskFor(si, mast) {
+    var key = si + ':' + mast; if (maskCache[key]) return maskCache[key];
+    var s = D.sites[si], m = new Float32Array(720), ho = s.elevM + mast;
+    for (var i = 0; i < 720; i++) { var th = s.dKm[i] * 1000 / R, ht = s.hT[i]; m[i] = Math.atan2((R + ht) * Math.cos(th) - (R + ho), (R + ht) * Math.sin(th)) * R2D; }
+    return (maskCache[key] = m);
+  }
+  function maskAt(m, az) { var x = (((az % 360) + 360) % 360) * 2, i0 = Math.floor(x) % 720, f = x - Math.floor(x); return m[i0] * (1 - f) + m[(i0 + 1) % 720] * f; }
+  function evaluate(si, mast) {
+    var key = si + ':' + mast; if (evalCache[key]) return evalCache[key];
+    var s = D.sites[si], m = maskFor(si, mast), sv = new Uint8Array(N), ev = new Uint8Array(N), ms = new Float32Array(N), me = new Float32Array(N), pw = new Float32Array(N);
+    for (var i = 0; i < N; i++) {
+      var rs = D.sunRadiusDeg[i], se = s.sun[i][1], ee = s.earth[i][1], re = s.earth[i][2];
+      ms[i] = maskAt(m, s.sun[i][0]); me[i] = maskAt(m, s.earth[i][0]);
+      sv[i] = se + rs > ms[i] ? 1 : 0; ev[i] = ee + re > me[i] ? 1 : 0;
+      pw[i] = 0.30 * 1361 * Math.pow(rs / R_SUN_1AU, 2) * clamp((se - ms[i] + rs) / (2 * rs), 0, 1) * Math.cos(se * D2R);
+    }
+    return (evalCache[key] = { sv: sv, ev: ev, ms: ms, me: me, pw: pw, mask: m });
+  }
+  function longestRun(arr, val, a, b) { var best = 0, cur = 0; for (var i = a; i < b; i++) { if (arr[i] === val) { cur++; if (cur > best) best = cur; } else cur = 0; } return best; }
+  function metrics(e, a, b) { a = a || 0; b = b || N; var n = b - a, s = 0, ea = 0, bo = 0, p = 0; for (var i = a; i < b; i++) { s += e.sv[i]; ea += e.ev[i]; bo += e.sv[i] & e.ev[i]; p += e.pw[i]; } return { sun: 100 * s / n, earth: 100 * ea / n, both: 100 * bo / n, dark: longestRun(e.sv, 0, a, b), gap: longestRun(e.ev, 0, a, b), power: p / n }; }
+  function band(k, v) {
+    if (k === 'sun') return v >= 80 ? 'good' : v >= 50 ? 'ok' : 'poor';
+    if (k === 'earth') return v >= 80 ? 'good' : v >= 40 ? 'ok' : 'poor';
+    if (k === 'both') return v >= 60 ? 'good' : v >= 30 ? 'ok' : 'poor';
+    if (k === 'dark') return v <= 84 ? 'good' : v <= 168 ? 'ok' : 'poor';
+    return 'ok';
+  }
+  function runs(arr, a, b) { var out = [], s0 = a; for (var i = a + 1; i <= b; i++) { if (i === b || arr[i] !== arr[s0]) { out.push([s0, i, arr[s0]]); s0 = i; } } return out; }
+  function vec(az, elv) { var a = az * D2R, e = elv * D2R; return [Math.cos(e) * Math.sin(a), Math.cos(e) * Math.cos(a), Math.sin(e)]; }
+  function dot(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+  // Earth's phase seen from the site: lit fraction from the Sun–Earth angle in the lunar sky; angle points toward the Sun on screen
+  function earthPhase(sunAz, sunEl, eAz, eEl) {
+    var s = vec(sunAz, sunEl), e = vec(eAz, eEl), c = clamp(dot(s, e), -1, 1);
+    var t = [s[0] - c * e[0], s[1] - c * e[1], s[2] - c * e[2]], a = eAz * D2R, el = eEl * D2R;
+    var right = [Math.cos(a), -Math.sin(a), 0], up = [-Math.sin(el) * Math.sin(a), -Math.sin(el) * Math.cos(a), Math.cos(el)];
+    return { lit: (1 - c) / 2, angle: Math.atan2(-dot(t, up), dot(t, right)) };
+  }
+  var centerCache = {};
+  function siteCenterAz(si) { if (centerCache[si] !== undefined) return centerCache[si]; var s = D.sites[si], x = 0, y = 0; s.earth.forEach(function (p) { x += Math.sin(p[0] * D2R); y += Math.cos(p[0] * D2R); }); return (centerCache[si] = (Math.atan2(x, y) * R2D + 360) % 360); }
+
+  // ---------- theme + mode ----------
+  function applyTheme(mode) {
+    if (mode === 'system') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', mode);
+    document.querySelectorAll('[data-theme-set]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeSet === mode)); });
+    try { localStorage.setItem('pw-theme', mode); } catch (err) {}
+    render();
+  }
+  document.querySelectorAll('[data-theme-set]').forEach(function (b) { b.addEventListener('click', function () { applyTheme(b.dataset.themeSet); }); });
+  function applyMode(m) { state.mode = m; document.body.setAttribute('data-mode', m); document.querySelectorAll('button[data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.mode === m)); }); render(); }
+  document.querySelectorAll('button[data-mode]').forEach(function (b) { b.addEventListener('click', function () { applyMode(b.dataset.mode); }); });
+
+  var siteSel = document.getElementById('site');
+  D.sites.forEach(function (s, i) { var o = document.createElement('option'); o.value = String(i); o.textContent = s.name; siteSel.appendChild(o); });
+  siteSel.addEventListener('change', function () { setSite(+siteSel.value); });
+
+  // ---------- hero sky (canvas) ----------
+  var canvas = document.getElementById('sky');
+  var STARS = (function () { var a = [], seed = 7; function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; } for (var k = 0; k < 360; k++) a.push([rnd(), rnd(), 0.2 + 0.8 * rnd() * rnd(), 0.4 + 1.1 * rnd()]); return a; })();
+  function drawSky() {
+    var s = D.sites[state.site], e = evaluate(state.site, state.mast), m = e.mask, i = state.t;
+    var dpr = Math.min(2, window.devicePixelRatio || 1), W = canvas.clientWidth, H = canvas.clientHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    var g = canvas.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var mMin = 90, mMax = -90, k; for (k = 0; k < 720; k++) { mMin = Math.min(mMin, m[k]); mMax = Math.max(mMax, m[k]); }
+    var bMax = -90; for (k = 0; k < N; k++) bMax = Math.max(bMax, s.sun[k][1], s.earth[k][1]);
+    var yTop = Math.max(8, Math.ceil(Math.max(mMax, bMax)) + 3), yBot = Math.floor(mMin) - 2;
+    var top = Math.min(150, H * 0.3), bottom = H - 34, cAz = siteCenterAz(state.site);
+    var X = function (az) { return W / 2 + wrap180(az - cAz) / 360 * W; };
+    var Y = function (v) { return top + (yTop - v) / (yTop - yBot) * (bottom - top); };
+    var pxDeg = (bottom - top) / (yTop - yBot), exag = pxDeg / (W / 360);
+    var sky = g.createLinearGradient(0, 0, 0, H); sky.addColorStop(0, '#020309'); sky.addColorStop(0.65, '#050911'); sky.addColorStop(1, '#0B1324');
+    g.fillStyle = sky; g.fillRect(0, 0, W, H);
+    var sb = s.sun[i], eb = s.earth[i], rs = D.sunRadiusDeg[i], vis = e.sv[i];
+    var sx = X(sb[0]), sy = Y(sb[1]), ex = X(eb[0]), ey = Y(eb[1]);
+    STARS.forEach(function (st) { var x = st[0] * W, y = st[1] * bottom; var d = Math.hypot(x - sx, y - sy); var a = st[2] * clamp((d - 70) / 240, 0, 1); if (a <= 0.03) return; g.fillStyle = 'rgba(225,232,245,' + a.toFixed(3) + ')'; g.beginPath(); g.arc(x, y, st[3] * 0.6, 0, 6.283); g.fill(); });
+    // Sun glow and disc (drawn first so the terrain occludes it)
+    var glowA = vis ? 0.6 : (sb[1] > e.ms[i] - 3 ? 0.25 : 0);
+    if (glowA > 0) { var gl = g.createRadialGradient(sx, sy, 0, sx, sy, 190); gl.addColorStop(0, 'rgba(255,220,160,' + glowA + ')'); gl.addColorStop(0.22, 'rgba(255,170,80,' + (glowA * 0.42).toFixed(3) + ')'); gl.addColorStop(1, 'rgba(255,150,60,0)'); g.fillStyle = gl; g.fillRect(sx - 190, sy - 190, 380, 380); }
+    var sr = Math.max(6, rs * pxDeg), sd = g.createRadialGradient(sx, sy, 0, sx, sy, sr);
+    sd.addColorStop(0, '#FFFEF8'); sd.addColorStop(0.7, '#FFE9B8'); sd.addColorStop(1, '#FFC062');
+    g.fillStyle = sd; g.beginPath(); g.arc(sx, sy, sr, 0, 6.283); g.fill();
+    // Earth with its real phase
+    var er = Math.max(8, eb[2] * pxDeg), ph = earthPhase(sb[0], sb[1], eb[0], eb[1]);
+    g.save(); g.translate(ex, ey);
+    var halo = g.createRadialGradient(0, 0, er, 0, 0, er * 2.4); halo.addColorStop(0, 'rgba(90,160,255,.25)'); halo.addColorStop(1, 'rgba(90,160,255,0)'); g.fillStyle = halo; g.beginPath(); g.arc(0, 0, er * 2.4, 0, 6.283); g.fill();
+    g.fillStyle = '#0D1A33'; g.beginPath(); g.arc(0, 0, er, 0, 6.283); g.fill();
+    g.rotate(ph.angle);
+    var lit = g.createLinearGradient(-er, 0, er, 0); lit.addColorStop(0, '#2A74CC'); lit.addColorStop(0.6, '#5FB2FF'); lit.addColorStop(1, '#C8E7FF');
+    g.fillStyle = lit; g.beginPath(); var a, t;
+    for (a = -90; a <= 90; a += 6) { t = a * D2R; g.lineTo(er * Math.cos(t), er * Math.sin(t)); }
+    for (a = 90; a >= -90; a -= 6) { t = a * D2R; g.lineTo((1 - 2 * ph.lit) * er * Math.cos(t), er * Math.sin(t)); }
+    g.closePath(); g.fill(); g.restore();
+    // month tracks behind the terrain
+    function track(arr, color) { g.lineWidth = 1.5; g.strokeStyle = color; g.globalAlpha = 0.45; g.beginPath(); var px = null; for (var q = 0; q < N; q++) { var x = X(arr[q][0]), y = Y(arr[q][1]); if (px !== null && Math.abs(x - px) < W / 2) g.lineTo(x, y); else g.moveTo(x, y); px = x; } g.stroke(); g.globalAlpha = 1; }
+    track(s.sun, '#FFC062'); track(s.earth, '#6FB8FF');
+    // terrain with a soft depth gradient
+    var startAz = cAz - 180, path = new Path2D(); path.moveTo(0, H);
+    for (k = 0; k <= 720; k++) path.lineTo(k / 720 * W, Y(maskAt(m, startAz + k / 2)));
+    path.lineTo(W, H); path.closePath();
+    var tg = g.createLinearGradient(0, Y(mMax), 0, H); tg.addColorStop(0, '#2C323D'); tg.addColorStop(0.45, '#181C24'); tg.addColorStop(1, '#090B10');
+    g.fillStyle = tg; g.fill(path);
+    // rim light on the ridge facing the Sun
+    for (k = 0; k < 720; k++) {
+      var az0 = startAz + k / 2, face = Math.cos((az0 - sb[0]) * D2R), inten = Math.pow(Math.max(0, face), 6) * (vis ? 1 : 0.35);
+      g.strokeStyle = inten > 0.03 ? 'rgba(255,' + Math.round(175 + 50 * inten) + ',' + Math.round(110 + 50 * inten) + ',' + (0.3 + 0.65 * inten).toFixed(2) + ')' : 'rgba(150,160,178,.35)';
+      g.lineWidth = inten > 0.03 ? 1 + 1.8 * inten : 1;
+      g.beginPath(); g.moveTo(k / 720 * W, Y(maskAt(m, az0))); g.lineTo((k + 1) / 720 * W, Y(maskAt(m, az0 + 0.5))); g.stroke();
+    }
+    // hidden parts of the tracks, dashed over the terrain
+    g.setLineDash([3, 5]);
+    [[s.sun, e.sv, '#FFC062'], [s.earth, e.ev, '#6FB8FF']].forEach(function (tr) {
+      g.strokeStyle = tr[2]; g.globalAlpha = 0.3; g.lineWidth = 1.2; g.beginPath(); var px = null;
+      for (var q = 0; q < N; q++) { var x = X(tr[0][q][0]), y = Y(tr[0][q][1]); if (!tr[1][q] && px !== null && Math.abs(x - px) < W / 2) g.lineTo(x, y); else g.moveTo(x, y); px = x; }
+      g.stroke();
+    });
+    g.setLineDash([]); g.globalAlpha = 1;
+    // elevation scale (right edge, quiet) and compass
+    g.font = '11px "IBM Plex Mono", monospace'; g.textBaseline = 'middle'; g.textAlign = 'left';
+    for (var v = Math.ceil(yBot / 2) * 2; v <= yTop; v += 2) { var yy = Y(v); if (yy < top - 6) continue; g.strokeStyle = v === 0 ? 'rgba(200,210,225,.2)' : 'rgba(200,210,225,.05)'; g.setLineDash(v === 0 ? [4, 6] : []); g.beginPath(); g.moveTo(0, yy); g.lineTo(W, yy); g.stroke(); if (v % 4 === 0) { g.fillStyle = 'rgba(200,210,225,.45)'; g.fillText((v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v) + '°', 10, yy - 7); } }
+    g.setLineDash([]);
+    var dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+    for (k = 0; k < 8; k++) { var x = X(k * 45); if (x < 24 || x > W - 24) continue; g.fillStyle = 'rgba(230,236,246,' + (k % 2 ? .55 : .85) + ')'; g.font = (k % 2 ? '11px' : '600 12px') + ' "IBM Plex Mono", monospace'; g.fillText(dirs[k], x, H - 12); }
+    function label(x, y, r, s1, s2, color) { var right = x > W - 200; g.textAlign = right ? 'right' : 'left'; var lx = x + (right ? -(r + 14) : r + 14); g.font = '650 14px Archivo, sans-serif'; g.fillStyle = color; g.fillText(s1, lx, y - 3); g.font = '11.5px "IBM Plex Mono", monospace'; g.fillStyle = 'rgba(220,228,240,.72)'; g.fillText(s2, lx, y + 13); }
+    if (sy < H) label(sx, sy, sr, 'Sun', sgn(sb[1]) + '° · ' + (vis ? 'above terrain' : 'behind terrain'), '#FFC56B');
+    if (ey < H) label(ex, ey, er, 'Earth', sgn(eb[1]) + '° · ' + Math.round(ph.lit * 100) + '% lit', '#7CC2FF');
+    document.getElementById('sky-note').textContent = 'elevation ×' + exag.toFixed(0) + ' · terrain LOLA 240 m · observer ' + state.mast + ' m';
+    canvas.setAttribute('aria-label', 'Lunar sky at ' + s.name + ': Sun ' + sgn(sb[1]) + '°, ' + (vis ? 'above' : 'behind') + ' the terrain; Earth ' + sgn(eb[1]) + '°, ' + (e.ev[i] ? 'in view' : 'hidden') + '.');
+    return ph;
+  }
+  var HEAD = [
+    { title: 'No sunlight, no Earth', pill: 'Blackout', color: '#FF8577', sub: 'Batteries carry the lander; no direct radio link.' },
+    { title: 'Sunlit, Earth out of sight', pill: 'Power only', color: '#FFC56B', sub: 'Arrays generate; data waits for Earth to rise.' },
+    { title: 'Earth in view, Sun hidden', pill: 'Contact only', color: '#7CC2FF', sub: 'Radio link open; running on stored energy.' },
+    { title: 'Sun and Earth both up', pill: 'Power and contact', color: '#4FDDB4', sub: 'Arrays generate and the direct-to-Earth link is open.' }
+  ];
+  function renderHero() {
+    var e = evaluate(state.site, state.mast), i = state.t, h = HEAD[e.sv[i] + 2 * e.ev[i]], ph = drawSky();
+    var pill = document.getElementById('sky-pill'); pill.style.color = h.color; pill.querySelector('span').textContent = h.pill;
+    document.getElementById('sky-title').textContent = h.title;
+    document.getElementById('sky-sub').textContent = D.sites[state.site].name + ' · ' + h.sub;
+    document.getElementById('sky-time').innerHTML = '<b>' + longDate(i) + '</b>' + clock(i);
+    return ph;
+  }
+
+  // ---------- scrubber (handlers on the host so dragging survives re-render) ----------
+  var scrubHost = document.getElementById('scrub');
+  function renderScrub() {
+    var e = evaluate(state.site, state.mast), o = svgFor(scrubHost, 62, 'Month timeline for the selected site'), S = o.s, W = o.w;
+    var x = function (k) { return 4 + k / (N - 1) * (W - 8); };
+    [[e.sv, 'var(--sun)', 6], [e.ev, 'var(--earth)', 21]].forEach(function (ln) {
+      el('rect', { x: 4, y: ln[2], width: W - 8, height: 11, rx: 3, fill: 'var(--none)' }, S);
+      runs(ln[0], 0, N).forEach(function (r) { if (r[2]) el('rect', { x: x(r[0]), y: ln[2], width: Math.max(1, x(r[1]) - x(r[0])), height: 11, rx: 2, fill: ln[1] }, S); });
+    });
+    if (state.mode === 'plan' && state.start !== null) { var L = Math.round(state.len * 24); el('rect', { x: x(state.start), y: 2, width: x(Math.min(N - 1, state.start + L)) - x(state.start), height: 34, rx: 5, fill: 'none', stroke: 'var(--fg)', 'stroke-opacity': 0.55, 'stroke-dasharray': '4 3' }, S); }
+    for (var d = 0; d <= 30; d += 5) txt(S, x(d * 24), 56, 'Jan ' + (d + 1), { 'text-anchor': d === 0 ? 'start' : d === 30 ? 'end' : 'middle', 'font-size': 11.5 });
+    var px = x(state.t);
+    el('line', { x1: px, x2: px, y1: 0, y2: 38, stroke: 'var(--fg)', 'stroke-width': 2 }, S);
+    el('circle', { cx: px, cy: 39, r: 6, fill: 'var(--fg)', stroke: 'var(--bg)', 'stroke-width': 2 }, S);
+    scrubHost.setAttribute('aria-valuemax', String(N - 1)); scrubHost.setAttribute('aria-valuenow', String(state.t)); scrubHost.setAttribute('aria-valuetext', shortDate(state.t) + ' UTC');
+  }
+  function scrubTo(ev) { var r = scrubHost.getBoundingClientRect(); state.t = clamp(Math.round((ev.clientX - r.left - 4) / (r.width - 8) * (N - 1)), 0, N - 1); renderLive(); }
+  var dragging = false;
+  scrubHost.addEventListener('pointerdown', function (ev) { dragging = true; scrubHost.setPointerCapture(ev.pointerId); scrubTo(ev); });
+  scrubHost.addEventListener('pointermove', function (ev) { if (dragging) scrubTo(ev); });
+  scrubHost.addEventListener('pointerup', function () { dragging = false; });
+  scrubHost.addEventListener('keydown', function (ev) {
+    var d = { ArrowRight: 1, ArrowLeft: -1, PageUp: 24, PageDown: -24 }[ev.key]; if (ev.shiftKey && d) d *= 24;
+    if (ev.key === 'Home') state.t = 0; else if (ev.key === 'End') state.t = N - 1; else if (d) state.t = clamp(state.t + d, 0, N - 1); else return;
+    ev.preventDefault(); renderLive();
+  });
+  var timer = null;
+  document.getElementById('play').addEventListener('click', function () {
+    state.playing = !state.playing; this.setAttribute('aria-label', state.playing ? 'Pause' : 'Play the month');
+    document.getElementById('play-icon').setAttribute('d', state.playing ? 'M3 2 H6 V12 H3 Z M8 2 H11 V12 H8 Z' : 'M3 1.5 L12 7 L3 12.5 Z');
+    if (state.playing) timer = setInterval(function () { state.t = (state.t + 2) % N; renderLive(); }, 70); else clearInterval(timer);
+  });
+
+  // ---------- stats ----------
+  var mastIn = document.getElementById('mast');
+  mastIn.addEventListener('input', function () { state.mast = +mastIn.value; render(); });
+  function renderStats(ph) {
+    var s = D.sites[state.site], e = evaluate(state.site, state.mast), i = state.t, sb = s.sun[i], eb = s.earth[i], mt = metrics(e);
+    var cs = sb[1] - e.ms[i], ce = eb[1] - e.me[i];
+    document.getElementById('st-sun').innerHTML = '<div class="head"><span class="eyebrow">Sun</span><span class="state" style="color:' + (e.sv[i] ? 'var(--sun)' : 'var(--muted)') + '">' + (e.sv[i] ? 'Above terrain' : 'Behind terrain') + '</span></div>' +
+      '<div class="big">' + sgn(sb[1]) + '<small>° elevation</small></div><p>' + (cs >= 0 ? 'Clears the ridge by ' + cs.toFixed(2) + '°' : 'Centre ' + Math.abs(cs).toFixed(2) + '° below the ridge') + ' toward ' + sb[0].toFixed(0) + '° azimuth. A vertical array makes ' + Math.round(e.pw[i]) + ' W/m².</p>';
+    document.getElementById('st-earth').innerHTML = '<div class="head"><span class="eyebrow">Earth</span><span class="state" style="color:' + (e.ev[i] ? 'var(--earth)' : 'var(--muted)') + '">' + (e.ev[i] ? 'Line of sight' : 'Hidden') + '</span></div>' +
+      '<div class="big">' + sgn(eb[1]) + '<small>° elevation</small></div><p>' + (ce >= 0 ? ce.toFixed(1) + '° above the terrain' : Math.abs(ce).toFixed(1) + '° below the terrain') + ', ' + Math.round(6371.0084 / Math.sin(eb[2] * D2R)).toLocaleString('en-US') + ' km away, ' + Math.round(ph.lit * 100) + '% lit.</p>';
+    var monthKWh = 0; for (var q = 0; q < N; q++) monthKWh += e.pw[q]; monthKWh /= 1000;
+    document.getElementById('st-energy').innerHTML = '<div class="head"><span class="eyebrow">Energy in January</span></div>' +
+      '<div class="big">' + monthKWh.toFixed(0) + '<small>kWh per m²</small></div><dl class="dl"><dt>Average output</dt><dd>' + Math.round(mt.power) + ' W/m²</dd><dt>Cells for 10 kW average</dt><dd>' + (mt.power > 0 ? Math.round(10000 / mt.power) + ' m²' : '—') + '</dd><dt>Longest night to store for</dt><dd>' + hrs(mt.dark) + '</dd><dt>Sun up / Earth up</dt><dd>' + mt.sun.toFixed(0) + '% / ' + mt.earth.toFixed(0) + '%</dd></dl>';
+    document.getElementById('mast-big').innerHTML = state.mast + '<small>m</small>';
+  }
+
+  // ---------- compare ----------
+  function renderCompare() {
+    var host = document.getElementById('cmp'), cols = [['sun', 'Sun', ''], ['earth', 'Earth', ''], ['both', 'Both', 'hide-md hide-sm'], ['dark', 'Night', 'hide-md hide-sm']];
+    var rows = D.sites.map(function (s, k) { var e = evaluate(k, state.mast); return { k: k, s: s, e: e, m: metrics(e) }; });
+    rows.sort(function (a, b) { return state.sort === 'dark' ? a.m.dark - b.m.dark : b.m[state.sort] - a.m[state.sort]; });
+    var html = '<div class="cmp-row head" role="row"><span class="eyebrow" role="columnheader">Site</span><span class="eyebrow bar-h" role="columnheader">January 2027</span>' +
+      cols.map(function (c) { return '<button type="button" role="columnheader" class="' + c[2] + '" data-sort="' + c[0] + '" aria-pressed="' + (state.sort === c[0]) + '">' + c[1] + (state.sort === c[0] ? ' ↓' : '') + '</button>'; }).join('') + '</div>';
+    rows.forEach(function (r) {
+      html += '<div class="cmp-row' + (r.k === state.site ? ' sel' : '') + '" role="row" tabindex="0" data-site="' + r.k + '"><div class="cmp-name" role="cell">' + esc(r.s.name) + '<small>' + esc(r.s.group) + '</small></div><div class="cmp-bar" role="cell" data-bar="' + r.k + '"></div>' +
+        '<div class="cmp-val ' + band('sun', r.m.sun) + '" role="cell">' + r.m.sun.toFixed(0) + '%</div><div class="cmp-val ' + band('earth', r.m.earth) + '" role="cell">' + r.m.earth.toFixed(0) + '%</div>' +
+        '<div class="cmp-val hide-md hide-sm ' + band('both', r.m.both) + '" role="cell">' + r.m.both.toFixed(0) + '%</div><div class="cmp-val hide-md hide-sm ' + band('dark', r.m.dark) + '" role="cell">' + hrs(r.m.dark) + '</div></div>';
+    });
+    host.innerHTML = html;
+    host.querySelectorAll('[data-sort]').forEach(function (b) { b.addEventListener('click', function () { state.sort = b.dataset.sort; renderCompare(); }); });
+    host.querySelectorAll('[data-site]').forEach(function (row) {
+      row.addEventListener('click', function () { setSite(+row.dataset.site); });
+      row.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); setSite(+row.dataset.site); } });
+    });
+    var fill = ['var(--none)', 'var(--sun)', 'var(--earth)', 'var(--both)'];
+    host.querySelectorAll('[data-bar]').forEach(function (b) {
+      var e = evaluate(+b.dataset.bar, state.mast), o = svgFor(b, 22, 'Availability over the month'), S = o.s, W = o.w, x = function (k) { return k / (N - 1) * W; };
+      var st = new Uint8Array(N); for (var q = 0; q < N; q++) st[q] = e.sv[q] + 2 * e.ev[q];
+      el('rect', { x: 0, y: 3, width: W, height: 16, rx: 4, fill: 'var(--none)' }, S);
+      runs(st, 0, N).forEach(function (r) { if (r[2]) el('rect', { x: x(r[0]), y: 3, width: Math.max(1, x(r[1]) - x(r[0])), height: 16, fill: fill[r[2]] }, S); });
+      el('line', { class: 'playhead', x1: x(state.t), x2: x(state.t), y1: 0, y2: 22, stroke: 'var(--fg)', 'stroke-width': 1.5 }, S);
+    });
+  }
+  function moveCompareHeads() { document.querySelectorAll('#cmp line.playhead').forEach(function (ln) { var W = +ln.ownerSVGElement.getAttribute('width'), x = state.t / (N - 1) * W; ln.setAttribute('x1', x); ln.setAttribute('x2', x); }); }
+
+  // ---------- context ----------
+  function phasePath(r, lit) { var d = '', a, t; for (a = -90; a <= 90; a += 10) { t = a * D2R; d += (d ? 'L' : 'M') + (r * Math.cos(t)).toFixed(2) + ',' + (r * Math.sin(t)).toFixed(2); } for (a = 90; a >= -90; a -= 10) { t = a * D2R; d += 'L' + ((1 - 2 * lit) * r * Math.cos(t)).toFixed(2) + ',' + (r * Math.sin(t)).toFixed(2); } return d + 'Z'; }
+  function renderWander(ph) {
+    var host = document.getElementById('wander'), o = svgFor(host, 300, 'Libration path of the sub-Earth point over the month'), S = o.s, W = o.w, H = o.h;
+    var cx = W / 2, cy = H / 2, sc = Math.min(W, H) / 2 / 9.6, r;
+    for (r = 2; r <= 8; r += 2) el('circle', { cx: cx, cy: cy, r: r * sc, fill: 'none', stroke: 'var(--line)' }, S);
+    el('line', { x1: cx - 9 * sc, x2: cx + 9 * sc, y1: cy, y2: cy, stroke: 'var(--line-2)' }, S);
+    el('line', { x1: cx, x2: cx, y1: cy - 9 * sc, y2: cy + 9 * sc, stroke: 'var(--line-2)' }, S);
+    [4, 8].forEach(function (v) { txt(S, cx + v * sc + 3, cy - 5, v + '°', { 'font-size': 11 }); });
+    txt(S, cx + 9 * sc, cy + 16, 'east–west', { 'text-anchor': 'end', 'font-size': 11 }); txt(S, cx + 6, cy - 9 * sc + 10, 'north–south', { 'font-size': 11 });
+    var pts = D.libration, k;
+    for (k = 1; k < N; k++) el('line', { x1: cx + pts[k - 1][0] * sc, y1: cy - pts[k - 1][1] * sc, x2: cx + pts[k][0] * sc, y2: cy - pts[k][1] * sc, stroke: 'var(--earth)', 'stroke-width': 2.2, 'stroke-linecap': 'round', opacity: (0.12 + 0.88 * k / N).toFixed(2) }, S);
+    var p = pts[state.t], ex = cx + p[0] * sc, ey = cy - p[1] * sc, er = 10;
+    el('circle', { cx: ex, cy: ey, r: er + 7, fill: 'none', stroke: 'var(--earth)', 'stroke-opacity': 0.45 }, S);
+    var g = el('g', { transform: 'translate(' + ex.toFixed(1) + ',' + ey.toFixed(1) + ') rotate(' + (ph.angle * R2D).toFixed(1) + ')' }, S);
+    el('circle', { r: er, fill: '#0D1A33' }, g); el('path', { d: phasePath(er, ph.lit), fill: '#5FB2FF' }, g);
+    var s = D.sites[state.site], eMin = 90, eMax = -90; s.earth.forEach(function (q) { eMin = Math.min(eMin, q[1]); eMax = Math.max(eMax, q[1]); });
+    document.getElementById('wander-cap').textContent = 'The point on the Moon directly under Earth traces this loop each month (darker is later). Seen from ' + s.name + ', the wobble moves Earth between ' + sgn(eMin, 1) + '° and ' + sgn(eMax, 1) + '° elevation, so direct radio contact comes and goes.';
+  }
+  function renderMap() {
+    var host = document.getElementById('map'), hgt = Math.min(440, Math.max(280, Math.round(host.clientWidth))), o = svgFor(host, hgt, 'South pole map with sites'), S = o.s, W = o.w, H = o.h;
+    var size = Math.min(W, H), ox = (W - size) / 2, oy = (H - size) / 2, half = D.relief.halfWidthM, rad = size / 2 - 2, cx = W / 2, cy = H / 2;
+    var defs = el('defs', {}, S), cp = el('clipPath', { id: 'mapclip' }, defs); el('circle', { cx: cx, cy: cy, r: rad }, cp);
+    var vg = el('radialGradient', { id: 'vign' }, defs); el('stop', { offset: '0.62', 'stop-color': '#000', 'stop-opacity': 0 }, vg); el('stop', { offset: '1', 'stop-color': '#000', 'stop-opacity': 0.6 }, vg);
+    var gm = el('g', { 'clip-path': 'url(#mapclip)' }, S);
+    el('image', { href: D.relief.png, x: ox, y: oy, width: size, height: size, preserveAspectRatio: 'none' }, gm);
+    el('rect', { x: ox, y: oy, width: size, height: size, fill: 'url(#vign)' }, gm);
+    var P = function (lat, lon) { var rho = 2 * R * Math.tan((90 - Math.abs(lat)) * D2R / 2), Xm = rho * Math.sin(lon * D2R), Ym = rho * Math.cos(lon * D2R); return [ox + (Xm + half) / (2 * half) * size, oy + (half - Ym) / (2 * half) * size]; };
+    [86, 88].forEach(function (lat) { var rr = 2 * R * Math.tan((90 - lat) * D2R / 2) / (2 * half) * size; el('circle', { cx: cx, cy: cy, r: rr, fill: 'none', stroke: '#fff', 'stroke-opacity': 0.28, 'stroke-dasharray': '2 4' }, gm); txt(gm, cx + 4, cy - rr - 4, lat + '°S', { fill: '#fff', 'fill-opacity': 0.75, 'font-size': 10.5 }); });
+    var ref = D.sites.reduce(function (b, q) { return q.lat < b.lat ? q : b; }, D.sites[0]), i = state.t;
+    var sunB = (ref.sun[i][0] + ref.lonE) * D2R, earthB = (ref.earth[i][0] + ref.lonE) * D2R;
+    var sg = el('linearGradient', { id: 'sunray', x1: cx, y1: cy, x2: cx + Math.sin(sunB) * rad, y2: cy - Math.cos(sunB) * rad, gradientUnits: 'userSpaceOnUse' }, defs);
+    el('stop', { offset: 0, 'stop-color': '#FFC062', 'stop-opacity': 0 }, sg); el('stop', { offset: 1, 'stop-color': '#FFC062', 'stop-opacity': 0.9 }, sg);
+    el('line', { x1: cx, y1: cy, x2: cx + Math.sin(sunB) * (rad - 14), y2: cy - Math.cos(sunB) * (rad - 14), stroke: 'url(#sunray)', 'stroke-width': 3, 'stroke-linecap': 'round' }, S);
+    el('circle', { cx: cx + Math.sin(sunB) * (rad - 9), cy: cy - Math.cos(sunB) * (rad - 9), r: 7, fill: '#FFD58A', stroke: '#05070B', 'stroke-width': 2 }, S);
+    el('circle', { cx: cx + Math.sin(earthB) * (rad - 9), cy: cy - Math.cos(earthB) * (rad - 9), r: 6, fill: '#4FA8FF', stroke: '#05070B', 'stroke-width': 2 }, S);
+    el('circle', { cx: cx, cy: cy, r: rad, fill: 'none', stroke: 'var(--line-2)' }, S);
+    S.style.cursor = 'crosshair';
+    S.addEventListener('click', function (ev) {
+      if (ev.target.closest && ev.target.closest('g[role=button]')) return;
+      var r = S.getBoundingClientRect(), px = (ev.clientX - r.left) / r.width * W, py = (ev.clientY - r.top) / r.height * H;
+      var Xm = (px - ox) / size * 2 * half - half, Ym = half - (py - oy) / size * 2 * half, rho = Math.hypot(Xm, Ym);
+      var lat = -(90 - 2 * Math.atan(rho / (2 * R)) * R2D), lon = Math.atan2(Xm, Ym) * R2D, best = 0, bd = 1e9;
+      D.sites.forEach(function (q, k) { var d = Math.hypot(P(q.lat, q.lonE)[0] - px, P(q.lat, q.lonE)[1] - py); if (d < bd) { bd = d; best = k; } });
+      setSite(best);
+    });
+    D.sites.forEach(function (q, k) {
+      var p = P(q.lat, q.lonE), sel = k === state.site, gg = el('g', { tabindex: 0, role: 'button', 'aria-label': 'Select ' + q.name, style: 'cursor:pointer' }, S);
+      if (sel) el('circle', { cx: p[0], cy: p[1], r: 14, fill: '#FFC062', 'fill-opacity': 0.28 }, gg);
+      el('circle', { cx: p[0], cy: p[1], r: sel ? 6.5 : 5, fill: sel ? '#FFC062' : '#F4F6FA', stroke: '#05070B', 'stroke-width': 2 }, gg);
+      var LBL = { 'malapert-massif': [false, 4], 'mons-mouton': [true, 4], 'shackleton-rim': [true, -5], 'connecting-ridge-c1': [true, 13] };
+      var right = LBL[q.id] ? LBL[q.id][0] : p[0] < cx + size * 0.2, dy = LBL[q.id] ? LBL[q.id][1] : 4;
+      txt(gg, p[0] + (right ? 12 : -12), p[1] + dy, q.name, { 'text-anchor': right ? 'start' : 'end', fill: '#F4F6FA', 'font-family': 'var(--text)', 'font-weight': 600, 'font-size': 12.5, 'paint-order': 'stroke', stroke: '#05070B', 'stroke-width': 3.5, 'stroke-linejoin': 'round' });
+      gg.addEventListener('click', function () { setSite(k); });
+      gg.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); setSite(k); } });
+    });
+  }
+
+  function stateBar(host, si, h) {
+    var e = evaluate(si, state.mast), o = svgFor(host, h, 'Availability over the month'), S = o.s, W = o.w, x = function (k) { return k / (N - 1) * W; };
+    var st = new Uint8Array(N); for (var q = 0; q < N; q++) st[q] = e.sv[q] + 2 * e.ev[q];
+    var fill = ['var(--none)', 'var(--sun)', 'var(--earth)', 'var(--both)'];
+    el('rect', { x: 0, y: 0, width: W, height: h, rx: 3, fill: 'var(--none)' }, S);
+    runs(st, 0, N).forEach(function (r) { if (r[2]) el('rect', { x: x(r[0]), y: 0, width: Math.max(1, x(r[1]) - x(r[0])), height: h, fill: fill[r[2]] }, S); });
+  }
+  function renderPicklist() {
+    var host = document.getElementById('picklist');
+    host.innerHTML = D.sites.map(function (q, k) {
+      var m = metrics(evaluate(k, state.mast));
+      return '<button type="button" class="pickitem" id="pick-' + q.id + '" data-pick="' + k + '" aria-pressed="' + (k === state.site) + '"><span><span class="nm">' + esc(q.name) + '</span><br><span class="meta">' + esc(q.group) + ' · ' + sgn(q.lat, 2) + '°, ' + sgn(q.lonE, 1) + '°E · ' + (q.elevM / 1000).toFixed(1) + ' km</span></span>' +
+        '<span class="nums"><span style="color:var(--sun)">' + m.sun.toFixed(0) + '% Sun</span><span style="color:var(--earth)">' + m.earth.toFixed(0) + '% Earth</span></span><span class="bar" data-pbar="' + k + '"></span></button>';
+    }).join('');
+    host.querySelectorAll('[data-pick]').forEach(function (b) { b.addEventListener('click', function () { setSite(+b.dataset.pick); }); });
+    host.querySelectorAll('[data-pbar]').forEach(function (b) { stateBar(b, +b.dataset.pbar, 8); });
+    document.getElementById('cta-name').textContent = D.sites[state.site].name;
+  }
+  function renderHeader() {
+    var q = D.sites[state.site], m = metrics(evaluate(state.site, state.mast));
+    document.getElementById('an-title').innerHTML = '<span class="step-no">2</span>' + esc(q.name) + ': sunlight, energy and Earth contact';
+    document.getElementById('an-sub').innerHTML = '<span>' + sgn(q.lat, 3) + '°, ' + sgn(q.lonE, 2) + '°E · ' + (q.elevM >= 0 ? '+' : '−') + Math.abs(q.elevM / 1000).toFixed(2) + ' km · ' + esc(q.group) + '</span>' +
+      '<span>January 2027: <b>' + m.sun.toFixed(0) + '% sunlit</b>, <b>' + m.earth.toFixed(0) + '% Earth in view</b>, longest night <b>' + hrs(m.dark) + '</b>, longest Earth gap <b>' + hrs(m.gap) + '</b></span>';
+  }
+  function renderEnergy() {
+    var host = document.getElementById('energy'), e = evaluate(state.site, state.mast), o = svgFor(host, 260, 'Daily solar energy and Earth contact hours'), S = o.s, W = o.w;
+    var days = Math.floor((N - 1) / 24), kwh = [], hrsE = [], d, q, maxK = 0;
+    for (d = 0; d < days; d++) { var sumP = 0, sumE = 0; for (q = d * 24; q < d * 24 + 24; q++) { sumP += e.pw[q]; sumE += e.ev[q]; } kwh.push(sumP / 1000); hrsE.push(sumE); maxK = Math.max(maxK, sumP / 1000); }
+    var L = 40, Rr = 6, top1 = 22, h1 = 100, top2 = 160, h2 = 60, bw = (W - L - Rr) / days, scaleMax = Math.max(2, Math.ceil(maxK / 2) * 2);
+    txt(S, L, 12, 'kWh per m² per day (vertical array, 30%)', { 'font-size': 11.5, fill: 'var(--sun)' });
+    [0, scaleMax / 2, scaleMax].forEach(function (v) { var y = top1 + h1 - v / scaleMax * h1; el('line', { x1: L, x2: W - Rr, y1: y, y2: y, stroke: 'var(--line)' }, S); txt(S, L - 6, y + 4, String(Math.round(v)), { 'text-anchor': 'end', 'font-size': 11 }); });
+    for (d = 0; d < days; d++) { var hh = kwh[d] / scaleMax * h1; el('rect', { x: L + d * bw + 1, y: top1 + h1 - hh, width: Math.max(1, bw - 2), height: Math.max(0, hh), rx: 1.5, fill: 'var(--sun)', opacity: kwh[d] > 0 ? 0.9 : 0 }, S); if (kwh[d] === 0) el('rect', { x: L + d * bw + 1, y: top1 + h1 - 2, width: Math.max(1, bw - 2), height: 2, fill: 'var(--poor)' }, S); }
+    txt(S, L, top2 - 10, 'Hours with Earth in view', { 'font-size': 11.5, fill: 'var(--earth)' });
+    [0, 24].forEach(function (v) { var y = top2 + h2 - v / 24 * h2; el('line', { x1: L, x2: W - Rr, y1: y, y2: y, stroke: 'var(--line)' }, S); txt(S, L - 6, y + 4, v + ' h', { 'text-anchor': 'end', 'font-size': 11 }); });
+    for (d = 0; d < days; d++) { var h3 = hrsE[d] / 24 * h2; el('rect', { x: L + d * bw + 1, y: top2 + h2 - h3, width: Math.max(1, bw - 2), height: h3, rx: 1.5, fill: 'var(--earth)', opacity: 0.9 }, S); }
+    for (d = 0; d < days; d += 5) txt(S, L + d * bw + bw / 2, 252, 'Jan ' + (d + 1), { 'text-anchor': d === 0 ? 'start' : 'middle', 'font-size': 11 });
+    var cd = Math.floor(state.t / 24); if (cd < days) el('rect', { x: L + cd * bw, y: top1 - 4, width: bw, height: top2 + h2 - top1 + 8, fill: 'none', stroke: 'var(--fg)', 'stroke-opacity': 0.6, rx: 2 }, S);
+    var zero = kwh.filter(function (v) { return v === 0; }).length, best = Math.max.apply(null, kwh);
+    document.getElementById('energy-cap').textContent = 'Best day ' + best.toFixed(1) + ' kWh per m² of vertical array. ' + (zero ? zero + ' days with no sunlight at all (red marks): the lander needs stored energy for them.' : 'Every day has some sunlight.') + ' Blue bars show how many hours each day a direct-to-Earth link is possible.';
+  }
+
+  // ---------- mission + SAPLE ----------
+  var lenBox = document.getElementById('len');
+  [6.5, 10, 14].forEach(function (v) { var b = document.createElement('button'); b.type = 'button'; b.id = 'len-' + String(v).replace('.', '-'); b.dataset.len = String(v); b.textContent = v + ' days'; b.addEventListener('click', function () { state.len = v; state.start = null; render(); }); lenBox.appendChild(b); });
+  var resIn = document.getElementById('reserve'), goIn = document.getElementById('go');
+  resIn.addEventListener('input', function () { state.reserve = +resIn.value; render(); });
+  goIn.addEventListener('input', function () { state.go = +goIn.value; render(); });
+  function feasible(e, a, b) { for (var i = a; i < b; i++) if (!e.sv[i]) return false; return true; }
+  function coverage(e, a, b) { var c = 0; for (var i = a; i < b; i++) c += e.ev[i]; return 100 * c / (b - a); }
+  function checks(e, a, b) {
+    var out = [], i, fd = -1; for (i = a; i < b; i++) if (!e.sv[i]) { fd = i; break; }
+    out.push({ kind: 'invariant', name: 'SunlitStay', expr: 'sun == UP', why: fd < 0 ? 'Sunlight on the arrays for every hour of the stay.' : 'The Sun drops behind terrain at ' + shortDate(fd) + ' UTC.', ok: fd < 0, at: fd });
+    var run = 0, worst = 0, wAt = -1; for (i = a; i < b; i++) { if (!e.sv[i]) { run++; worst = Math.max(worst, run); if (run > state.reserve && wAt < 0) wAt = i; } else run = 0; }
+    out.push({ kind: 'invariant', name: 'BatterySafe', expr: 'reserveH >= 0', why: 'Longest dark spell in the stay is ' + worst + ' h; the battery covers ' + state.reserve + ' h.', ok: wAt < 0, at: wAt });
+    var fe = -1; for (i = a; i < b; i++) if (e.ev[i]) { fe = i; break; }
+    out.push({ kind: 'reachable', name: 'DteWindow', expr: 'earth == UP', why: fe >= 0 ? 'First line of sight to Earth at ' + shortDate(fe) + ' UTC.' : 'Earth never clears the terrain during the stay.', ok: fe >= 0, at: -1 });
+    var cov = coverage(e, a, b);
+    out.push({ kind: 'invariant', name: 'DteCoverage', expr: 'contactPct >= ' + state.go, why: 'Earth in view ' + cov.toFixed(0) + '% of the stay; the rule needs ' + state.go + '%.', ok: cov >= state.go, at: -1 });
+    var bo = -1; for (i = a; i < b; i++) if (!e.sv[i] && !e.ev[i]) { bo = i; break; }
+    out.push({ kind: 'unreachable', name: 'Blackout', expr: 'sun == DOWN && earth == DOWN', why: bo < 0 ? 'Never without both power and contact.' : 'Both lost at ' + shortDate(bo) + ' UTC.', ok: bo < 0, at: bo });
+    return out;
+  }
+  function spl(s, e, a, b) {
+    var K = function (t) { return '<span class="k">' + t + '</span>'; }, C = function (t) { return '<span class="c">' + esc(t) + '</span>'; }, T = function (t) { return '<span class="t">' + t + '</span>'; };
+    var L = [];
+    L.push(C('// Generated by Polar Window for ' + s.name), C('// Stay ' + shortDate(a) + ' UTC + ' + state.len + ' d · observer ' + state.mast + ' m · LOLA 240 m'), K('type') + ' Vis = { UP, DOWN };', '');
+    L.push(K('transition') + ' sunRise()   { guard: sun == DOWN ;   effect: sun := UP ; }', K('transition') + ' sunSet()    { guard: sun == UP ;     effect: sun := DOWN ; }');
+    L.push(K('transition') + ' earthRise() { guard: earth == DOWN ; effect: earth := UP ; }', K('transition') + ' earthSet()  { guard: earth == UP ;   effect: earth := DOWN ; }');
+    L.push(K('transition') + ' tick(h : Int) {', '    guard:  h > 0 ;', '    effect: if (sun == DOWN) then { reserveH -= h ; } else { reserveH := capacityH ; } ;', '}');
+    L.push(K('transition') + ' downlink()  { guard: earth == UP ;   effect: sent += 1 ; }', '');
+    var parts = [], last = a, ps = e.sv[a], pe = e.ev[a], i;
+    for (i = a + 1; i < b; i++) { var evs = []; if (e.sv[i] !== ps) { evs.push(e.sv[i] ? 'sunRise()' : 'sunSet()'); ps = e.sv[i]; } if (e.ev[i] !== pe) { evs.push(e.ev[i] ? 'earthRise()' : 'earthSet()'); pe = e.ev[i]; } if (evs.length) { parts.push('tick(' + (i - last) + ')'); parts = parts.concat(evs); last = i; } }
+    if (b - last > 0) parts.push('tick(' + (b - last) + ')'); parts.push('done');
+    var line = '        Trace = ', rows = [];
+    parts.forEach(function (p, k) { var piece = p + (k < parts.length - 1 ? ' . ' : ' ;'); if (line.length + piece.length > 62) { rows.push(line); line = '                '; } line += piece; });
+    rows.push(line);
+    L.push(K('agent') + ' Sky() {', '    behavior {'); rows.forEach(function (r) { L.push(r.replace(/(sunRise\(\)|sunSet\(\)|earthRise\(\)|earthSet\(\))/g, T('$1'))); }); L.push('    }', '}');
+    L.push(K('agent') + ' Lander() {', '    behavior { Ops = [earth == UP] downlink() . Ops + done ; }', '}', '');
+    L.push(K('schema') + ' Mission {', '    attributes {', '        sun : Vis = ' + (e.sv[a] ? 'UP' : 'DOWN') + ' ;  earth : Vis = ' + (e.ev[a] ? 'UP' : 'DOWN') + ' ;', '        reserveH : Int = ' + state.reserve + ' ;  capacityH : Int = ' + state.reserve + ' ;  sent : Int = 0 ;', '    }', '}');
+    L.push(K('system') + ' SouthPoleStay {', '    schema: Mission ;', '    agents { Sky() * 1 ; Lander() * 1 ; }', '    init   { reserveH == capacityH && sent == 0 ; }', '    properties { batterySafe : reserveH >= 0 ; }', '}');
+    L.push(K('property invariant') + ' SunlitStay { sun == UP }', K('property reachable') + ' DteWindow { earth == UP }', K('property unreachable') + ' Blackout { sun == DOWN && earth == DOWN }');
+    return L.join('\n');
+  }
+  function renderMission() {
+    var s = D.sites[state.site], e = evaluate(state.site, state.mast), L = Math.round(state.len * 24), last = N - L, a;
+    lenBox.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(+b.dataset.len === state.len)); });
+    document.getElementById('reserve-label').textContent = state.reserve + ' h'; document.getElementById('go-label').textContent = state.go + '%';
+    document.getElementById('key-go').textContent = 'Sunlit stay with Earth contact ≥ ' + state.go + '%';
+    if (state.start === null || state.start > last) { state.start = 0; for (a = 0; a <= last; a++) if (feasible(e, a, a + L)) { state.start = a; break; } }
+    document.getElementById('strip-label').textContent = 'Landing date at ' + s.name + ' (' + state.len + '-day stay)';
+    var o = svgFor(document.getElementById('strip'), 50, 'Landing dates'), S = o.s, W = o.w, cw = (W - 8) / (last + 1);
+    el('rect', { x: 4, y: 6, width: W - 8, height: 22, rx: 5, fill: 'var(--none)' }, S);
+    var cls = new Uint8Array(last + 1); for (a = 0; a <= last; a++) cls[a] = feasible(e, a, a + L) ? (coverage(e, a, a + L) >= state.go ? 2 : 1) : 0;
+    runs(cls, 0, last + 1).forEach(function (r) { if (r[2]) el('rect', { x: 4 + r[0] * cw, y: 6, width: (r[1] - r[0]) * cw, height: 22, fill: r[2] === 2 ? 'var(--both)' : 'var(--sun)' }, S); });
+    el('rect', { x: 4 + state.start * cw - 2, y: 2, width: Math.max(4, cw + 4), height: 30, rx: 3, fill: 'none', stroke: 'var(--fg)', 'stroke-width': 2 }, S);
+    for (var d = 0; d * 24 <= last; d += 5) txt(S, 4 + d * 24 * cw, 46, 'Jan ' + (d + 1), { 'font-size': 11.5, 'text-anchor': d === 0 ? 'start' : 'middle' });
+    S.style.cursor = 'pointer';
+    S.addEventListener('click', function (ev) { var r = S.getBoundingClientRect(); state.start = clamp(Math.floor((ev.clientX - r.left - 4) / (r.width - 8) * (last + 1)), 0, last); state.t = state.start; render(); });
+    var a0 = state.start, b0 = a0 + L, ow = svgFor(document.getElementById('window'), 200, 'Mission window'), S2 = ow.s, W2 = ow.w, L2 = 70;
+    var x = function (k) { return L2 + (k - a0) / L * (W2 - L2 - 6); };
+    [['Sun', e.sv, 'var(--sun)', 6], ['Earth', e.ev, 'var(--earth)', 32]].forEach(function (ln) {
+      txt(S2, 0, ln[3] + 13, ln[0], { 'font-family': 'var(--text)', 'font-size': 13, 'font-weight': 600, fill: 'var(--fg)' });
+      el('rect', { x: L2, y: ln[3], width: W2 - L2 - 6, height: 18, rx: 4, fill: 'var(--none)' }, S2);
+      runs(ln[1], a0, b0).forEach(function (r) { if (r[2]) el('rect', { x: x(r[0]), y: ln[3], width: Math.max(1, x(r[1]) - x(r[0])), height: 18, fill: ln[2] }, S2); });
+    });
+    var top = 70, bot = 150, cap = Math.max(1, state.reserve), res = cap, minR = cap, i;
+    var yy = function (v) { return bot - (clamp(v, -cap * 0.3, cap) + cap * 0.3) / (cap * 1.3) * (bot - top); }, path = '', area = 'M' + x(a0) + ',' + yy(0);
+    for (i = a0; i < b0; i++) { res = e.sv[i] ? cap : res - 1; minR = Math.min(minR, res); path += (i === a0 ? 'M' : 'L') + x(i).toFixed(1) + ',' + yy(res).toFixed(1); area += 'L' + x(i).toFixed(1) + ',' + yy(Math.max(0, res)).toFixed(1); }
+    area += 'L' + x(b0 - 1) + ',' + yy(0) + 'Z';
+    txt(S2, 0, top + 12, 'Battery', { 'font-family': 'var(--text)', 'font-size': 13, 'font-weight': 600, fill: 'var(--fg)' }); txt(S2, 0, top + 28, cap + ' h full', { 'font-size': 11 });
+    el('path', { d: area, fill: minR < 0 ? 'var(--poor)' : 'var(--both)', 'fill-opacity': 0.14 }, S2);
+    el('line', { x1: L2, x2: W2 - 6, y1: yy(0), y2: yy(0), stroke: 'var(--poor)', 'stroke-dasharray': '4 3' }, S2);
+    txt(S2, W2 - 6, yy(0) - 5, 'empty', { 'text-anchor': 'end', fill: 'var(--poor)', 'font-size': 10.5 });
+    el('path', { d: path, fill: 'none', stroke: minR < 0 ? 'var(--poor)' : 'var(--both)', 'stroke-width': 2 }, S2);
+    var step = state.len > 10 ? 2 : 1;
+    for (var q = 0; q <= Math.floor(state.len); q += step) { el('line', { x1: x(a0 + q * 24), x2: x(a0 + q * 24), y1: 2, y2: bot, stroke: 'var(--line)' }, S2); txt(S2, x(a0 + q * 24), 172, 'day ' + q, { 'text-anchor': q === 0 ? 'start' : 'middle', 'font-size': 11 }); }
+    txt(S2, L2, 194, 'Land ' + shortDate(a0) + ' UTC', { 'font-size': 11.5, fill: 'var(--fg)' }); txt(S2, W2 - 6, 194, 'Lift off ' + shortDate(b0) + ' UTC', { 'font-size': 11.5, fill: 'var(--fg)', 'text-anchor': 'end' });
+    var cks = checks(e, a0, b0);
+    cks.forEach(function (c) { if (!c.ok && c.at >= 0) el('line', { x1: x(c.at), x2: x(c.at), y1: 2, y2: bot, stroke: 'var(--poor)', 'stroke-width': 2 }, S2); });
+    var okI = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.3 L5 8.6 L9.6 3.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var badI = '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 3 L9 9 M9 3 L3 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+    document.getElementById('rules').innerHTML = cks.map(function (c) { return '<div class="rule"><span class="ic ' + (c.ok ? 'ok' : 'bad') + '" aria-label="' + (c.ok ? 'holds' : 'violated') + '">' + (c.ok ? okI : badI) + '</span><span class="nm">' + c.name + '<span class="mono">' + esc(c.expr) + '</span></span><span class="kind">' + c.kind + '</span><span class="why">' + esc(c.why) + '</span></div>'; }).join('');
+    var fname = 'polar_window_' + s.id.replace(/-/g, '_') + '.sbl';
+    document.getElementById('spl-name').textContent = fname;
+    document.getElementById('spl').innerHTML = spl(s, e, a0, b0);
+    var out = ['<span class="c">$ saple analyze ' + fname + ' --verbose   # preview</span>'];
+    cks.forEach(function (c) { out.push('  ' + (c.name + '              ').slice(0, 14) + (c.kind + '            ').slice(0, 12) + (c.ok ? '<span class="g">✓ holds</span>' : '<span class="r">✗ violated' + (c.at >= 0 ? ' at ' + shortDate(c.at) : '') + '</span>')); });
+    var nbad = cks.filter(function (c) { return !c.ok; }).length;
+    out.push('<span class="c">  ' + (cks.length - nbad) + ' of ' + cks.length + ' rules hold · computed in-page · SAPLE run pending</span>');
+    document.getElementById('spl-out').innerHTML = out.join('\n');
+  }
+
+  // ---------- orchestration ----------
+  var lastMapT = -1;
+  function setSite(k) { state.site = k; state.start = null; siteSel.value = String(k); render(); }
+  function renderLive() { var ph = renderHero(); renderScrub(); renderStats(ph); moveCompareHeads(); renderWander(ph); if (Math.abs(state.t - lastMapT) >= 3) { lastMapT = state.t; renderMap(); } if (Math.floor(state.t / 24) !== lastDay) { lastDay = Math.floor(state.t / 24); renderEnergy(); } }
+  var lastDay = -1;
+  function render() { if (state.mode === 'plan') renderMission(); renderPicklist(); renderHeader(); var ph = renderHero(); renderScrub(); renderStats(ph); renderEnergy(); lastDay = Math.floor(state.t / 24); renderCompare(); renderWander(ph); lastMapT = state.t; renderMap(); }
+
+  try { var saved = localStorage.getItem('pw-theme'); if (saved && saved !== 'system') { document.documentElement.setAttribute('data-theme', saved); document.querySelectorAll('[data-theme-set]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.themeSet === saved)); }); } } catch (err) {}
+  document.body.setAttribute('data-mode', state.mode);
+  var e0 = evaluate(0, 2); for (var i0 = 0; i0 < N; i0++) { if (e0.sv[i0] && e0.ev[i0] && D.sites[0].sun[i0][1] > 0.8) { state.t = i0; break; } }
+  render();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { renderHero(); });
+  var rt = null; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(render, 120); });
+})();
+</script>
