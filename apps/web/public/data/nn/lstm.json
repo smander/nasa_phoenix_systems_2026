@@ -1,0 +1,73 @@
+{
+ "inputs": 7,
+ "hidden": 64,
+ "att": 32,
+ "head": 48,
+ "rules": [
+  "SunlitStay",
+  "BatterySafe",
+  "DteWindow",
+  "DteCoverage",
+  "Blackout"
+ ],
+ "bin": "data/nn/lstm.bin",
+ "perHour": [
+  "Sun margin (deg / 6, clipped to ±1)",
+  "Sun up (0 or 1)",
+  "Earth margin (deg / 6, clipped to ±1)",
+  "Earth up (0 or 1)",
+  "battery reserve / 120 h",
+  "Earth contact needed / 100",
+  "156 / hours in the stay"
+ ],
+ "training": "LSTM 7->64 (one layer), attention 32 with one head per rule, output head 48; binary cross-entropy, Adam with a one-cycle learning rate, 14 passes; PyTorch 2.8.0 (pipeline/train_lstm.py); labels from the direct calculation",
+ "report": {
+  "trainedOn": {
+   "stays": 230850,
+   "sites": 45,
+   "years": "2026–2028"
+  },
+  "unseenSites": {
+   "ruleAccuracy": [
+    1.0,
+    0.9991,
+    0.9999,
+    0.9989,
+    1.0
+   ],
+   "allRules": 0.9979,
+   "stays": 31500,
+   "sites": 9,
+   "siteIds": [
+    "nobile-rim-2",
+    "connecting-ridge-extension",
+    "amundsen-crater",
+    "faustini-crater",
+    "nobile-crater",
+    "sverdrup-crater",
+    "apollo-15",
+    "change-3",
+    "luna-9"
+   ]
+  },
+  "unseenYear": {
+   "ruleAccuracy": [
+    1.0,
+    0.9988,
+    1.0,
+    0.9988,
+    0.9999
+   ],
+   "allRules": 0.9976,
+   "stays": 31500,
+   "year": "2029"
+  },
+  "unsureBand": [
+   0.1,
+   0.9
+  ],
+  "errorsFlaggedUnsure": 0.8611,
+  "shareUnsure": 0.0034,
+  "validationAccuracy": 0.9995
+ }
+}
