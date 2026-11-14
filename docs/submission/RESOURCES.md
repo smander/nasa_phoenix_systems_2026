@@ -39,10 +39,11 @@ Space Apps asks teams to list every piece of code, data, text and image they use
 
 ## Images and artwork
 
-- Phoenix Systems logo, battery and radio-dish illustrations: supplied by the team. [Team to confirm how they were made.]
+- Phoenix Systems logo and emblem, battery and radio-dish illustrations: AI-generated with Google Gemini, then processed with `tools/art/` (Pillow). Marked with a visible "AI-generated · Gemini" watermark and a metadata note (`tools/art/watermark.py`), and labelled in the app and the deck.
 - All other imagery is NASA's, listed above.
 
 ## Tools
 
+- Google Gemini generated the logo, the emblem and the battery and radio-dish illustrations (see above).
 - An AI coding assistant helped write and review code, process data and draft text (see "Use of artificial intelligence" in [PROJECT.md](PROJECT.md)).
 - SAPLE 0.2.0, the team's formal-verification engine, for the mission-rule model (`tools/saple/models/`, `npm run saple`). It links the Z3 solver (Microsoft Research, MIT licence).

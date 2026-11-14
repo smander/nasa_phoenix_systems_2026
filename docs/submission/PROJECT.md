@@ -61,7 +61,7 @@ The Space Apps rules allow AI tools and require teams to say how they were used.
 
 The product itself also contains artificial intelligence: the mission neural network described above (an LSTM with attention). It is our own small model, trained on data computed from NASA terrain and ephemerides. It is not a generative model and uses no external AI service.
 
-[Team to confirm before submitting: which tools made the logo and the battery and radio-dish illustrations.]
+The Phoenix Systems logo and emblem and the battery and radio-dish illustrations were generated with Google Gemini, then cut, layered and resized with our scripts (`tools/art/`). Each carries a visible "AI-generated · Gemini" watermark and a note in its file metadata; where an image is too small for a readable watermark, the app labels it on screen and every slide of the deck says so. No generated image contains NASA logos, flags or mission identifiers. All other imagery is NASA's own. No audio or video was generated.
 
 ## Team
 

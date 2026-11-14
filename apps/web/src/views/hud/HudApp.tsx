@@ -54,7 +54,7 @@ export function HudApp({ a }: { a: Analysis }) {
 
   const bar = (
     <div className="bar">
-      <div className="logo"><img className="brand-emblem" src="brand/phoenix-emblem-96.png" width={48} height={48} alt="Phoenix Systems" /><div className="brand-text"><span className="title">Polar Window</span><small>by <b>PHOENIX</b> SYSTEMS</small></div></div>
+      <div className="logo"><span className="brand-mark"><img className="brand-emblem" src="brand/phoenix-emblem-96.png" width={48} height={48} alt="Phoenix Systems logo (AI-generated with Google Gemini)" /><span className="ai-tag" title="Logo, battery and radio-dish art: AI-generated with Google Gemini">AI</span></span><div className="brand-text"><span className="title">Polar Window</span><small>by <b>PHOENIX</b> SYSTEMS</small></div></div>
       <nav className="tabs" aria-label="Sections" style={{ display: 'flex', gap: 10 }}>
         {TABS.map(([id, label]) => <button key={id} type="button" className="tab title" aria-current={s.tab === id ? 'page' : undefined} onClick={() => s.setTab(id)}>{label}</button>)}
       </nav>

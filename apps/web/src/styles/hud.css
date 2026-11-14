@@ -130,6 +130,10 @@
 .hud.compact .t3-box { position: relative; left: auto; top: auto; width: 100%; }
 
 /* brand: Phoenix Systems emblem + product name */
+/* SI disclosure: the team's AI-generated art (Google Gemini) is labelled where it appears */
+.hud .brand-mark { position: relative; display: inline-flex; }
+.hud .ai-tag { position: absolute; right: -6px; bottom: -4px; padding: 1px 3px; border-radius: 3px; font: 700 9px/1 system-ui, sans-serif; letter-spacing: .02em; color: #E8ECF2; background: rgba(7,9,13,.82); border: 1px solid rgba(232,236,242,.35); cursor: help; }
+.hud .ai-mark { font-family: system-ui, sans-serif; font-weight: 600; fill: rgba(232,236,242,.8); stroke: rgba(7,9,13,.75); stroke-width: 3px; paint-order: stroke; pointer-events: none; }
 .hud .brand-emblem { width: 48px; height: 48px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(255,120,40,.35)); }
 .hud .brand-text { display: grid; line-height: 1.1; }
 .hud .brand-text .title { font-size: 20px; }

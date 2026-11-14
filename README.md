@@ -71,7 +71,7 @@ packages/design-system/   design tokens, components and examples; build_tokens.c
 pipeline/                 Python: LOLA download/reader, horizon masks, map relief, tiles, Horizons fixtures, LSTM training
 tools/saple/              runs the SAPLE CLI on mission models; models/ holds example models and findings
 tools/nn/                 builds the LSTM training set with the exact engine
-tools/art/                builds the battery, dish and texture art from design/assets
+tools/art/                builds the battery, dish and texture art from design/assets; watermark.py marks the AI-generated art
 design/                   brand, source artwork and early mockups
 docs/                     submission text, design brief and critique
 ```
@@ -82,6 +82,15 @@ docs/                     submission text, design brief and critique
 - Away from the south pole the global terrain has ~1.9 km pixels, so nearby hills and crater walls are smoothed; horizons there are approximate.
 - 240 m terrain under-resolves narrow ridge crests. Published peak values (for example 88% at Connecting Ridge, Gläser et al. 2018) use 20 m terrain and multi-year averages.
 - On the deployed site the SAPLE verdicts are the page's own direct calculation, labelled "preview"; the real engine runs only on a local server with the `saple` CLI. SAPLE's walk is bounded at 100 actions per path; the longest stay in the batch needed 13 Sun/Earth events, far inside that bound.
+
+## Use of AI
+
+Space Apps allows AI ("super intelligence") tools and asks teams to say where and how they were used.
+
+- **Images.** The Phoenix Systems logo and emblem, the battery (power) illustrations and the radio-dish (Earth link) illustrations were generated with **Google Gemini**, then cut, layered and resized with our scripts in `tools/art/`. Every copy carries a visible "AI-generated · Gemini" watermark and a note in its file metadata (`tools/art/watermark.py`). Where the images are too small to read a watermark, the app labels them on screen ("AI-generated" next to the battery and the dish, an "AI" tag on the logo), and every slide of the deck says so. No generated image contains NASA logos, flags or mission identifiers.
+- **Code, data processing and text.** An AI coding assistant helped write and review code, process the NASA datasets and draft documentation. The team set the design, chose the data and checked every result. All scientific numbers come from NASA data and the open-source astronomy-engine library, and the Sun and Earth positions are validated against JPL Horizons.
+- **AI inside the product.** The mission check uses our own small LSTM neural network, trained by us on data from the exact calculation. It is not a generative model and calls no external AI service.
+- All other imagery (Earth, clouds, the Sun and the Moon's terrain) is NASA's own. No audio or video was generated.
 
 ## Credits
 

@@ -65,7 +65,7 @@ export const RULE_SHORT: Record<string, (go: number) => string> = {
 };
 
 
-// Battery artwork (tools/art/build_battery_art.py): one fixed shell and solar panel, and the cell stack in
+// Battery artwork (tools/art/build_battery_art.py), AI-generated with Google Gemini and labelled on screen: one fixed shell and solar panel, and the cell stack in
 // three colours on the same canvas. Only the lit cells change; the frame never moves or resizes.
 const ART = artGeometry;
 export const BATTERY_CELLS = 7;
@@ -104,11 +104,12 @@ export function BatteryArt({ frac }: { frac: number }) {
       <g clipPath="url(#batt-cells)">
         {(Object.keys(CELL_COLOURS) as CellColour[]).map((c) => <image key={c} className="cells" href={`battery/art-fill-${c}.webp`} width={ART.width} height={ART.height} opacity={c === colour ? 1 : 0} />)}
       </g>
+      <text className="ai-mark" x={ART.width - 2} y={ART.height - 4} textAnchor="end" fontSize={16}>AI-generated</text>
     </svg>
   );
 }
 
-// Earth-link dish (tools/art/build_dish_art.py): the active and inactive drawings aligned on one canvas, so the
+// Earth-link dish (tools/art/build_dish_art.py), AI-generated with Google Gemini and labelled on screen: the active and inactive drawings aligned on one canvas, so the
 // frame never moves. Radio waves are drawn here, centred on the feed horn, only while the link is open.
 const DISH = dishGeometry;
 function waveArc(r: number): string {
@@ -130,6 +131,7 @@ export function DishArt({ on }: { on: boolean }) {
           </g>
         ))}
       </g>
+      <text className="ai-mark" x={DISH.width + 6} y={DISH.height - 10} textAnchor="start" fontSize={19}>AI-generated</text>
     </svg>
   );
 }
