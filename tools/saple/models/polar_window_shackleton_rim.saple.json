@@ -1,0 +1,41 @@
+{
+ "saple": "saple 0.2.0",
+ "commit": "a573a58",
+ "command": "saple --format json analyze polar_window_shackleton_rim.spl --no-auto-load",
+ "exit": 1,
+ "warnings": [],
+ "findings": [
+  {
+   "attack_witness": null,
+   "description": "Property 'DteCoverage' violated",
+   "pattern": null,
+   "property": "DteCoverage",
+   "replay_verified": null,
+   "severity": "HIGH",
+   "source": "Property",
+   "timing_ms": null,
+   "trace": [
+    "wait",
+    "earthSet",
+    "wait",
+    "liftOff"
+   ],
+   "witness": {
+    "blackoutH": "Int(0)",
+    "capacityH": "Int(20)",
+    "clockH": "Int(240)",
+    "contactH": "Int(81)",
+    "earth": "Int(0)",
+    "ended": "Int(1)",
+    "h": "Int(159)",
+    "needPct": "Int(60)",
+    "nextEarth": "Int(240)",
+    "nextSun": "Int(240)",
+    "reserveH": "Int(20)",
+    "stayH": "Int(240)",
+    "sun": "Int(1)"
+   },
+   "witness_error": null
+  }
+ ]
+}

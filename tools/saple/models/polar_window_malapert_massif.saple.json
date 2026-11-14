@@ -1,0 +1,187 @@
+{
+ "saple": "saple 0.2.0",
+ "commit": "a573a58",
+ "command": "saple --format json analyze polar_window_malapert_massif.spl --no-auto-load",
+ "exit": 1,
+ "warnings": [
+  "warning: these transitions were reached but their guard never held: earthRise, earthSet, sunRise"
+ ],
+ "findings": [
+  {
+   "attack_witness": null,
+   "description": "Property 'SunlitStay' violated",
+   "pattern": null,
+   "property": "SunlitStay",
+   "replay_verified": null,
+   "severity": "HIGH",
+   "source": "Property",
+   "timing_ms": null,
+   "trace": [
+    "wait",
+    "sunSet"
+   ],
+   "witness": {
+    "blackoutH": "Int(0)",
+    "capacityH": "Int(50)",
+    "clockH": "Int(36)",
+    "contactH": "Int(36)",
+    "earth": "Int(1)",
+    "ended": "Int(0)",
+    "going": "Int(0)",
+    "h": "Int(155)",
+    "latDeg": "Real(85.9799)",
+    "latSide": "Int(0)",
+    "lonDeg": "Real(0.2558)",
+    "lonSide": "Int(0)",
+    "needPct": "Int(25)",
+    "observerM": "Real(2.0)",
+    "reserveH": "Int(50)",
+    "stayH": "Int(156)",
+    "sun": "Int(0)"
+   },
+   "witness_error": null
+  },
+  {
+   "attack_witness": null,
+   "description": "Property 'SunlitStay' violated",
+   "pattern": null,
+   "property": "SunlitStay",
+   "replay_verified": null,
+   "severity": "HIGH",
+   "source": "Property",
+   "timing_ms": null,
+   "trace": [
+    "wait",
+    "sunSet",
+    "wait"
+   ],
+   "witness": {
+    "blackoutH": "Int(0)",
+    "capacityH": "Int(50)",
+    "clockH": "Int(156)",
+    "contactH": "Int(156)",
+    "earth": "Int(1)",
+    "ended": "Int(0)",
+    "going": "Int(1)",
+    "h": "Int(155)",
+    "latDeg": "Real(85.9799)",
+    "latSide": "Int(0)",
+    "lonDeg": "Real(0.2558)",
+    "lonSide": "Int(0)",
+    "needPct": "Int(25)",
+    "observerM": "Real(2.0)",
+    "reserveH": "Int(-70)",
+    "stayH": "Int(156)",
+    "sun": "Int(0)"
+   },
+   "witness_error": null
+  },
+  {
+   "attack_witness": null,
+   "description": "Property 'BatterySafe' violated",
+   "pattern": null,
+   "property": "BatterySafe",
+   "replay_verified": null,
+   "severity": "HIGH",
+   "source": "Property",
+   "timing_ms": null,
+   "trace": [
+    "wait",
+    "sunSet",
+    "wait"
+   ],
+   "witness": {
+    "blackoutH": "Int(0)",
+    "capacityH": "Int(50)",
+    "clockH": "Int(156)",
+    "contactH": "Int(156)",
+    "earth": "Int(1)",
+    "ended": "Int(0)",
+    "going": "Int(1)",
+    "h": "Int(155)",
+    "latDeg": "Real(85.9799)",
+    "latSide": "Int(0)",
+    "lonDeg": "Real(0.2558)",
+    "lonSide": "Int(0)",
+    "needPct": "Int(25)",
+    "observerM": "Real(2.0)",
+    "reserveH": "Int(-70)",
+    "stayH": "Int(156)",
+    "sun": "Int(0)"
+   },
+   "witness_error": null
+  },
+  {
+   "attack_witness": null,
+   "description": "Property 'SunlitStay' violated",
+   "pattern": null,
+   "property": "SunlitStay",
+   "replay_verified": null,
+   "severity": "HIGH",
+   "source": "Property",
+   "timing_ms": null,
+   "trace": [
+    "wait",
+    "sunSet",
+    "wait",
+    "liftOff"
+   ],
+   "witness": {
+    "blackoutH": "Int(0)",
+    "capacityH": "Int(50)",
+    "clockH": "Int(156)",
+    "contactH": "Int(156)",
+    "earth": "Int(1)",
+    "ended": "Int(1)",
+    "going": "Int(1)",
+    "h": "Int(155)",
+    "latDeg": "Real(85.9799)",
+    "latSide": "Int(0)",
+    "lonDeg": "Real(0.2558)",
+    "lonSide": "Int(0)",
+    "needPct": "Int(25)",
+    "observerM": "Real(2.0)",
+    "reserveH": "Int(-70)",
+    "stayH": "Int(156)",
+    "sun": "Int(0)"
+   },
+   "witness_error": null
+  },
+  {
+   "attack_witness": null,
+   "description": "Property 'BatterySafe' violated",
+   "pattern": null,
+   "property": "BatterySafe",
+   "replay_verified": null,
+   "severity": "HIGH",
+   "source": "Property",
+   "timing_ms": null,
+   "trace": [
+    "wait",
+    "sunSet",
+    "wait",
+    "liftOff"
+   ],
+   "witness": {
+    "blackoutH": "Int(0)",
+    "capacityH": "Int(50)",
+    "clockH": "Int(156)",
+    "contactH": "Int(156)",
+    "earth": "Int(1)",
+    "ended": "Int(1)",
+    "going": "Int(1)",
+    "h": "Int(155)",
+    "latDeg": "Real(85.9799)",
+    "latSide": "Int(0)",
+    "lonDeg": "Real(0.2558)",
+    "lonSide": "Int(0)",
+    "needPct": "Int(25)",
+    "observerM": "Real(2.0)",
+    "reserveH": "Int(-70)",
+    "stayH": "Int(156)",
+    "sun": "Int(0)"
+   },
+   "witness_error": null
+  }
+ ]
+}
