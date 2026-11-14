@@ -1,0 +1,1 @@
+{"width": 1267, "height": 1267, "scaleM": 480.0, "x0M": -303840.0, "y0M": 303840.0, "heightScale": 0.5, "radiusKm": 1737.4, "dtype": "int16le", "source": "LOLA ldem_75s_240m, 2x2 block mean", "bin": "data/dem480.bin"}

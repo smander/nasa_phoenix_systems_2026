@@ -1,0 +1,1020 @@
+{
+ "version": 1,
+ "generatedAt": "2026-10-28T20:16:46Z",
+ "demProduct": "NASA LRO LOLA GDR ldem_75s_240m (240 m/pixel) near the south pole, ldem_16 (16 px/deg, ~1.9 km) elsewhere; PDS LRO-L-LOLA-4-GDR-V1.0",
+ "sites": [
+  {
+   "id": "haworth",
+   "name": "Haworth",
+   "groups": [
+    "artemis-2024",
+    "artemis-2022"
+   ],
+   "lat": -86.753,
+   "lonE": -23.6718,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon -34.98 to -12.36, lat -87.39 to -86.11). Retained in 2024; the 2024 map box is larger (~31 km) than other boxes. A peak adjacent to the Haworth crater PSR (IAU -87.45/-5.17, 51 km); elevation -2900 to +1650 m; described as near-perpetual sunlight on the high point (Astronomy.com). PGDA has a 5 m LOLA DEM for Haworth.",
+   "elevM": 1554.5,
+   "horizonUrl": "data/horizons/haworth.json",
+   "maxHorizonDeg": 6.8,
+   "avgSunPct": 32.5,
+   "avgEarthPct": 40.7,
+   "psr": false,
+   "illumInset": "data/illum/haworth.bin"
+  },
+  {
+   "id": "malapert-massif",
+   "name": "Malapert Massif",
+   "groups": [
+    "artemis-2024",
+    "artemis-2022"
+   ],
+   "lat": -85.9799,
+   "lonE": -0.2558,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon -5.66 to 5.15, lat -86.33 to -85.63). Retained in 2024 (digitized -85.97/-0.2). = Mons Malapert (IAU 2024, -85.98/-1.67, 67 km) / Mazarico Site 23. Bussey 2010: M1 86.04S/2.7E 74% (54-95%), M2 86.00S/2.9W 74% (58-90%). LUPEX/ESA ROIs MP1 (85.9756S, -2.11E) and MP2 (86.0265S, 2.76E). Rises to ~5000 m with near-perpetual sunlight on the high ground and nearly continuous Earth view",
+   "literature": [
+    {
+     "sunPct": 82.1,
+     "earthPct": 100,
+     "heightM": 2,
+     "ref": "Bryant 2009, JPL (Malapert alpha, 1-year)",
+     "url": "https://ipnpr.jpl.nasa.gov/progress_report/42-176/176C.pdf"
+    }
+   ],
+   "elevM": 4815.2,
+   "horizonUrl": "data/horizons/malapert-massif.json",
+   "maxHorizonDeg": 4.16,
+   "avgSunPct": 44.3,
+   "avgEarthPct": 71.4,
+   "psr": false,
+   "illumInset": "data/illum/malapert-massif.bin"
+  },
+  {
+   "id": "mons-mouton",
+   "name": "Mons Mouton",
+   "groups": [
+    "artemis-2024"
+   ],
+   "lat": -85.4,
+   "lonE": 31.6,
+   "quality": "approximate",
+   "sourceUrl": "https://www.nasa.gov/wp-content/uploads/2024/10/artemis-iii-landing-region-candidates.jpg",
+   "notes": "Digitized from NASA's Oct-2024 map (box ~17 km). Coincides with the 2022 'Leibnitz Beta Plateau' box (Zenodo midpoint -85.4258/31.8273), i.e. a rename after IAU naming; the peak reaches ~6000 m and descends to ~5000 m toward the pole (Astronomy.com). Overlaps the Nobile Rim 1 box on the map. LUPEX/ESA ROI LP1 (85.4596S, 31.78E) nearby.",
+   "elevM": 6442.5,
+   "horizonUrl": "data/horizons/mons-mouton.json",
+   "maxHorizonDeg": 1.27,
+   "avgSunPct": 60.1,
+   "avgEarthPct": 99.9,
+   "psr": false,
+   "illumInset": "data/illum/mons-mouton.bin"
+  },
+  {
+   "id": "mons-mouton-plateau",
+   "name": "Mons Mouton Plateau",
+   "groups": [
+    "artemis-2024"
+   ],
+   "lat": -84.31,
+   "lonE": 30.5,
+   "quality": "approximate",
+   "sourceUrl": "https://www.nasa.gov/wp-content/uploads/2024/10/artemis-iii-landing-region-candidates.jpg",
+   "notes": "Digitized from NASA's Oct-2024 map: a large box ~78 x 59 km (not 15x15 km) on the flat summit of Mons Mouton (IAU -84.6/31.0, 130 km), north of the 'Mons Mouton' box and adjoining Nobile Rim 1. Elevation 5000-6000 m; widest and flattest Artemis site (~60 km span), high enough for near-perpetual sunlight; sized for expanded Artemis IV/V exploration (Astronomy.com). IM-2 Athena landed inside this re",
+   "elevM": 5255.3,
+   "horizonUrl": "data/horizons/mons-mouton-plateau.json",
+   "maxHorizonDeg": 5.93,
+   "avgSunPct": 24.5,
+   "avgEarthPct": 63.9,
+   "psr": false,
+   "illumInset": "data/illum/mons-mouton-plateau.bin"
+  },
+  {
+   "id": "nobile-rim-1",
+   "name": "Nobile Rim 1",
+   "groups": [
+    "artemis-2024",
+    "artemis-2022"
+   ],
+   "lat": -85.4378,
+   "lonE": 37.4446,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon 31.66-43.23, lat -85.90 to -84.98). Same box in 2024 (digitized -85.42/37.3). SW rim of Nobile rising ~3000 m (Astronomy.com). Mazarico 2011 Site 6 / PGDA Site06 'Nobile rim 1'. Adjacent (east) to the Mons Mouton / Leibnitz Beta Plateau region.",
+   "elevM": 5906.5,
+   "horizonUrl": "data/horizons/nobile-rim-1.json",
+   "maxHorizonDeg": 12.19,
+   "avgSunPct": 30.8,
+   "avgEarthPct": 29.4,
+   "psr": false,
+   "illumInset": "data/illum/nobile-rim-1.bin"
+  },
+  {
+   "id": "nobile-rim-2",
+   "name": "Nobile Rim 2",
+   "groups": [
+    "artemis-2024",
+    "artemis-2022"
+   ],
+   "lat": -83.9531,
+   "lonE": 58.7435,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon 54.46-63.02, lat -84.40 to -83.50). Same box on the Oct-2024 NASA map (digitized -83.93/58.7). NE rim of Nobile (IAU -85.28/53.27, 79 km). Elevation about -1400 m, second-lowest Artemis site (Astronomy.com from NASA). ~15x15 km nominal.",
+   "elevM": 990.4,
+   "horizonUrl": "data/horizons/nobile-rim-2.json",
+   "maxHorizonDeg": 7.91,
+   "avgSunPct": 38.5,
+   "avgEarthPct": 68.3,
+   "psr": false,
+   "illumInset": "data/illum/nobile-rim-2.bin"
+  },
+  {
+   "id": "peak-near-cabeus-b",
+   "name": "Peak near Cabeus B",
+   "groups": [
+    "artemis-2024"
+   ],
+   "lat": -83.63,
+   "lonE": -68.7,
+   "quality": "approximate",
+   "sourceUrl": "https://www.nasa.gov/wp-content/uploads/2024/10/artemis-iii-landing-region-candidates.jpg",
+   "notes": "Digitized from NASA's Oct-2024 region map (box ~21 km; ~193 km from pole; NASA/Astronomy.com: ~200 km, most distant region, terrain climbs ~6 km over 30 km; elevation -2900 to +3850 m). Uncertainty ~0.05 deg lat, ~1.5 deg lon. Cabeus B crater IAU center -82.26/-54.58 (59.6 km). Flahaut 2020 'South Cabeus B' ROI (-84.0, -60.5): highest avg Earth visibility of 14 south-polar ROIs (0.55), illuminatio",
+   "elevM": 4524.4,
+   "horizonUrl": "data/horizons/peak-near-cabeus-b.json",
+   "maxHorizonDeg": 6.01,
+   "avgSunPct": 41.3,
+   "avgEarthPct": 47.2,
+   "psr": false,
+   "illumInset": "data/illum/peak-near-cabeus-b.bin"
+  },
+  {
+   "id": "slater-plain",
+   "name": "Slater Plain",
+   "groups": [
+    "artemis-2024"
+   ],
+   "lat": -87.16,
+   "lonE": 125.2,
+   "quality": "approximate",
+   "sourceUrl": "https://www.nasa.gov/wp-content/uploads/2024/10/artemis-iii-landing-region-candidates.jpg",
+   "notes": "Digitized from NASA's Oct-2024 map (box ~21 km, ~86 km from pole, far side). Plain NE of Slater crater (IAU -88.08/111.29, 25 km); lowest-elevation Artemis region, rolling hills sloping east to west from ~1800 m to -300 m (Astronomy.com). Far-side longitude implies reduced direct-to-Earth visibility. New in 2024.",
+   "elevM": -20.4,
+   "horizonUrl": "data/horizons/slater-plain.json",
+   "maxHorizonDeg": 8.48,
+   "avgSunPct": 1.9,
+   "avgEarthPct": 41.5,
+   "psr": false,
+   "illumInset": "data/illum/slater-plain.bin"
+  },
+  {
+   "id": "de-gerlache-rim-2",
+   "name": "de Gerlache Rim 2",
+   "groups": [
+    "artemis-2024",
+    "artemis-2022"
+   ],
+   "lat": -88.2226,
+   "lonE": -63.4349,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon -77.47 to -49.40, lat -88.66 to -87.79). Retained in 2024; closest region to the pole (~50-54 km); rim rises ~3000 m above surroundings (Astronomy.com). Flahaut 2020 'North de Gerlache' ROI (-87.9, -65.1): avg Earth visibility 0.50, illumination 0.32. de Gerlache crater IAU center -88.48/-88.34, 32.7 km, PSR floor.",
+   "elevM": -158.8,
+   "horizonUrl": "data/horizons/de-gerlache-rim-2.json",
+   "maxHorizonDeg": 13.82,
+   "avgSunPct": 38.0,
+   "avgEarthPct": 54.4,
+   "psr": false,
+   "illumInset": "data/illum/de-gerlache-rim-2.bin"
+  },
+  {
+   "id": "amundsen-rim",
+   "name": "Amundsen Rim",
+   "groups": [
+    "artemis-2022"
+   ],
+   "lat": -84.2256,
+   "lonE": 69.3038,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bounding-box midpoint of the NASA 2022 region polygon (Bertone et al. 2026 PSJ archive, doi 10.5281/zenodo.17954508; bbox lon 65.10-73.51, lat -84.65 to -83.80). Nominal region ~15x15 km (NASA release 22-089). Dropped from the Oct-2024 list. Rim of Amundsen crater (IAU center -84.44/83.07, 103 km). Flahaut 2020 'South Amundsen' ROI (-85.0, 90.0): avg Earth visibility 0.32, avg illumination 0.26. N",
+   "elevM": 416.7,
+   "horizonUrl": "data/horizons/amundsen-rim.json",
+   "maxHorizonDeg": 5.92,
+   "avgSunPct": 43.3,
+   "avgEarthPct": 58.3,
+   "psr": false,
+   "illumInset": "data/illum/amundsen-rim.bin"
+  },
+  {
+   "id": "connecting-ridge",
+   "name": "Connecting Ridge",
+   "groups": [
+    "artemis-2022"
+   ],
+   "lat": -89.4627,
+   "lonE": -136.6789,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon -171.47 to -101.89, lat -89.84 to -89.09). Dropped in 2024. Ridge between Shackleton and de Gerlache = Mazarico 2011 Site 1 / PGDA Site01. Cross-check: Glaser 2018 C1 -89.4398/222.83E(-137.17) 88.0% avg & 92.1% max illumination at 2 m, longest shadow 112 h; Mazarico 2011 -89.45/222.69E 89.0%/92.7%; Glaser 2014: 92.3% at 2 m, 95.66% at 10 m, dark spells 3-5 days; Barker 2021: lar",
+   "elevM": 1943.7,
+   "horizonUrl": "data/horizons/connecting-ridge.json",
+   "maxHorizonDeg": 0.86,
+   "avgSunPct": 72.9,
+   "avgEarthPct": 58.1,
+   "psr": false,
+   "illumInset": "data/illum/connecting-ridge.bin"
+  },
+  {
+   "id": "connecting-ridge-extension",
+   "name": "Connecting Ridge Extension",
+   "groups": [
+    "artemis-2022"
+   ],
+   "lat": -88.9939,
+   "lonE": -104.4733,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon -130.73 to -78.22, lat -89.37 to -88.62); lon midpoint less meaningful this close to the pole. Dropped in 2024. PGDA site SL3. Bertone 2026: SfS DEM reveals sharper high-illumination ridges and more small PSRs here. Extends the Shackleton-de Gerlache ridge toward de Gerlache; Glaser 2018 'Connecting Ridge C2' (-89.3130, 245.98E = -114.02) has 78.1% avg / 82.0% max illumination a",
+   "elevM": 983.7,
+   "horizonUrl": "data/horizons/connecting-ridge-extension.json",
+   "maxHorizonDeg": 12.25,
+   "avgSunPct": 31.1,
+   "avgEarthPct": 0.0,
+   "psr": false,
+   "illumInset": "data/illum/connecting-ridge-extension.bin"
+  },
+  {
+   "id": "faustini-rim-a",
+   "name": "Faustini Rim A",
+   "groups": [
+    "artemis-2022"
+   ],
+   "lat": -87.8635,
+   "lonE": 90.0,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon 79.51-100.49, lat -88.19 to -87.54). Dropped in 2024. Rim/proximal ejecta of Faustini crater (IAU -87.18/84.31, 42 km; PSR floor). PGDA LOLA_5mpp site LM8 'Faustini Rim A'. Flahaut 2020 'Faustini ridge' ROI (-87.6, 103.7): avg Earth visibility 0.31, illumination 0.26; 'Shoemaker-Faustini ridge' (-87.1, 65.4): 0.38/0.26.",
+   "elevM": 44.4,
+   "horizonUrl": "data/horizons/faustini-rim-a.json",
+   "maxHorizonDeg": 5.75,
+   "avgSunPct": 39.1,
+   "avgEarthPct": 50.3,
+   "psr": false,
+   "illumInset": "data/illum/faustini-rim-a.bin"
+  },
+  {
+   "id": "leibnitz-beta-plateau",
+   "name": "Leibnitz Beta Plateau",
+   "groups": [
+    "artemis-2022"
+   ],
+   "lat": -85.4258,
+   "lonE": 31.8273,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon 27.29-36.37, lat -85.79 to -85.06). Summit plateau of Leibnitz Beta, named Mons Mouton by IAU (2022/2023). The Oct-2024 map shows the same box relabeled 'Mons Mouton' (digitized -85.40/31.6). Mazarico 2011 Site 20 / PGDA Site20. LUPEX/ESA ROI LP1 (85.4596S, 31.78E) chosen for high illumination and strong Earth visibility (Hemmi 2025). VIPER's Mons Mouton site is in this vicinity",
+   "literature": [
+    {
+     "sunPct": 79.1,
+     "earthPct": 100,
+     "heightM": 2,
+     "ref": "Bryant 2009, JPL (Leibnitz beta, 1-year)",
+     "url": "https://ipnpr.jpl.nasa.gov/progress_report/42-176/176C.pdf"
+    }
+   ],
+   "elevM": 6410.0,
+   "horizonUrl": "data/horizons/leibnitz-beta-plateau.json",
+   "maxHorizonDeg": 4.77,
+   "avgSunPct": 51.3,
+   "avgEarthPct": 51.8,
+   "psr": false,
+   "illumInset": "data/illum/leibnitz-beta-plateau.bin"
+  },
+  {
+   "id": "peak-near-shackleton",
+   "name": "Peak Near Shackleton",
+   "groups": [
+    "artemis-2022"
+   ],
+   "lat": -88.8085,
+   "lonE": 124.6842,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon 107.53-141.84, lat -89.17 to -88.44). Dropped in 2024. Isolated far-side peak between Shackleton and Slater = Mazarico 2011 Site 7 / PGDA Site07 / Kumari 2022 Site 007 (dense boulder field near a large PSR). Bussey 2010 point D 88.79S/124.5E: 86% illuminated in 2020 (58-100% per lunar day). Flahaut 2020 'Near Shackleton' ROI (-88.6, 101.4): avg Earth visibility 0.39. SpaceNews: ",
+   "elevM": 1618.0,
+   "horizonUrl": "data/horizons/peak-near-shackleton.json",
+   "maxHorizonDeg": 2.25,
+   "avgSunPct": 66.3,
+   "avgEarthPct": 50.6,
+   "psr": false,
+   "illumInset": "data/illum/peak-near-shackleton.bin"
+  },
+  {
+   "id": "de-gerlache-rim-1",
+   "name": "de Gerlache Rim 1",
+   "groups": [
+    "artemis-2022"
+   ],
+   "lat": -88.6749,
+   "lonE": -66.3701,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Archive label is 'de Gerlache Rim' (ID 9; bbox lon -81.16 to -51.58, lat -89.02 to -88.33); identified as Rim 1 because it contains Mazarico Site 11 / Kumari Site 011 (UAF: Site 011 is in de Gerlache Rim 1) and Bussey point C 88.71S/68.7W (85% illuminated in 2020, min 64%). Dropped in 2024. LUPEX candidate GR1 (88.6952S, 291.7154E) lies here. Boulder fields near the most-illuminated point (Kumari ",
+   "elevM": 1584.8,
+   "horizonUrl": "data/horizons/de-gerlache-rim-1.json",
+   "maxHorizonDeg": 13.11,
+   "avgSunPct": 47.1,
+   "avgEarthPct": 60.6,
+   "psr": false,
+   "illumInset": "data/illum/de-gerlache-rim-1.bin"
+  },
+  {
+   "id": "de-gerlache-kocher-massif",
+   "name": "de Gerlache-Kocher Massif",
+   "groups": [
+    "artemis-2022"
+   ],
+   "lat": -85.8269,
+   "lonE": -116.5371,
+   "quality": "region",
+   "sourceUrl": "https://zenodo.org/api/records/17954508/files/README.md/content",
+   "notes": "Bbox midpoint (lon -122.59 to -110.48, lat -86.27 to -85.39). Dropped in 2024. Far-side massif between de Gerlache and Kocher (IAU -84.47/-134.02, 24 km); PGDA Site42. Used as the example region in Bertone 2026 (PGDA product 104). Far-side location implies limited direct Earth visibility.",
+   "elevM": 2635.2,
+   "horizonUrl": "data/horizons/de-gerlache-kocher-massif.json",
+   "maxHorizonDeg": 8.07,
+   "avgSunPct": 40.5,
+   "avgEarthPct": 2.9,
+   "psr": false,
+   "illumInset": "data/illum/de-gerlache-kocher-massif.bin"
+  },
+  {
+   "id": "amundsen-crater",
+   "name": "Amundsen crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -84.4398,
+   "lonE": 83.0691,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/247",
+   "notes": "IAU center, diameter 103.39 km; Artemis 2022 Amundsen Rim region on its rim; Flahaut 2020 South Amundsen ROI.",
+   "elevM": -3562.7,
+   "horizonUrl": "data/horizons/amundsen-crater.json",
+   "maxHorizonDeg": 11.16,
+   "avgSunPct": 15.6,
+   "avgEarthPct": 17.5,
+   "psr": false,
+   "illumInset": "data/illum/amundsen-crater.bin"
+  },
+  {
+   "id": "cabeus-lcross-impact",
+   "name": "Cabeus (LCROSS Centaur impact site)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -84.675,
+   "lonE": -48.725,
+   "quality": "exact",
+   "sourceUrl": "https://sci.esa.int/web/smart-1/-/45692-new-lcross-impact-target-cabeus",
+   "notes": "Target impact point (84.675S, 311.275E) as of 8 Oct 2009; shepherding spacecraft 84.729S/310.64E; impact 9 Oct 2009 11:31 UTC inside the permanently shadowed part of Cabeus; water detected in the ejecta plume (Colaprete 2010). Cabeus crater IAU center -85.3303/-42.1327 (100.58 km; Wikipedia gives older 84.9S/35.5W).",
+   "elevM": -3829.3,
+   "horizonUrl": "data/horizons/cabeus-lcross-impact.json",
+   "maxHorizonDeg": 11.47,
+   "avgSunPct": 0.0,
+   "avgEarthPct": 18.6,
+   "psr": true,
+   "illumInset": "data/illum/cabeus-lcross-impact.bin"
+  },
+  {
+   "id": "cabeus-b-crater",
+   "name": "Cabeus B crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -82.2587,
+   "lonE": -54.5846,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/8058",
+   "notes": "IAU satellite feature (305.4154E), diameter 59.62 km; namesake of the 2024 'Peak near Cabeus B' region (~70 km to its SW).",
+   "elevM": -3950.2,
+   "horizonUrl": "data/horizons/cabeus-b-crater.json",
+   "maxHorizonDeg": 9.79,
+   "avgSunPct": 10.8,
+   "avgEarthPct": 42.7,
+   "psr": false,
+   "illumInset": "data/illum/cabeus-b-crater.bin"
+  },
+  {
+   "id": "cabeus-crater",
+   "name": "Cabeus crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -85.3303,
+   "lonE": -42.1327,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/953",
+   "notes": "IAU center (317.8673E), diameter 100.58 km; PSR floor with LCROSS-confirmed volatiles; ~60 km floor. Wueller et al. 2025 geologic map covers Mons Mouton, Mons Malapert and Cabeus.",
+   "elevM": -3731.7,
+   "horizonUrl": "data/horizons/cabeus-crater.json",
+   "maxHorizonDeg": 21.7,
+   "avgSunPct": 0.0,
+   "avgEarthPct": 0.0,
+   "psr": true,
+   "illumInset": "data/illum/cabeus-crater.bin"
+  },
+  {
+   "id": "change-7-target",
+   "name": "Chang'e-7 target (illuminated rim of Shackleton)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -88.8,
+   "lonE": 123.4,
+   "quality": "approximate",
+   "sourceUrl": "https://en.wikipedia.org/wiki/Chang%27e_7",
+   "notes": "CNSA/NSSC (Wang et al. 2023, NSR, doi 10.1093/nsr/nwad329) state the lander will land on the illuminated rim of Shackleton; final site not announced. The 88.8S/123.4E value is Wikipedia's ('Peak near the southeast ridge of Shackleton', citing a Weibo post) and coincides with NASA's Peak Near Shackleton region (-88.81/124.68). Landing accuracy <100 m; Queqiao-2 relay used because Earth visibility i",
+   "elevM": 1629.2,
+   "horizonUrl": "data/horizons/change-7-target.json",
+   "maxHorizonDeg": 0.71,
+   "avgSunPct": 56.3,
+   "avgEarthPct": 57.3,
+   "psr": false,
+   "illumInset": "data/illum/change-7-target.bin"
+  },
+  {
+   "id": "connecting-ridge-c1",
+   "name": "Connecting Ridge C1 (peak)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -89.4398,
+   "lonE": -137.17,
+   "quality": "exact",
+   "sourceUrl": "https://ntrs.nasa.gov/api/citations/20170007365/downloads/20170007365.pdf",
+   "notes": "Best-lit point on the ridge between Shackleton and de Gerlache (Gläser et al. 2018, site C1): 88.0% average illumination at 2 m over 20 years; longest shadow 112 h.",
+   "literature": [
+    {
+     "sunPct": 88.0,
+     "heightM": 2,
+     "ref": "Gläser et al. 2018 (20-year average)",
+     "url": "https://ntrs.nasa.gov/api/citations/20170007365/downloads/20170007365.pdf"
+    }
+   ],
+   "elevM": 1952.0,
+   "horizonUrl": "data/horizons/connecting-ridge-c1.json",
+   "maxHorizonDeg": -0.53,
+   "avgSunPct": 79.8,
+   "avgEarthPct": 54.8,
+   "psr": false,
+   "illumInset": "data/illum/connecting-ridge-c1.bin"
+  },
+  {
+   "id": "faustini-crater",
+   "name": "Faustini crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -87.1832,
+   "lonE": 84.3099,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/1919",
+   "notes": "IAU center, diameter 42.48 km, PSR floor; rim hosts Artemis 2022 region Faustini Rim A.",
+   "elevM": -2755.9,
+   "horizonUrl": "data/horizons/faustini-crater.json",
+   "maxHorizonDeg": 10.16,
+   "avgSunPct": 0.0,
+   "avgEarthPct": 1.8,
+   "psr": true,
+   "illumInset": "data/illum/faustini-crater.bin"
+  },
+  {
+   "id": "haworth-crater",
+   "name": "Haworth crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -87.45,
+   "lonE": -5.17,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/14502",
+   "notes": "IAU center (354.83E), diameter 51.42 km, PSR floor adjacent to the Artemis Haworth region.",
+   "elevM": -3302.9,
+   "horizonUrl": "data/horizons/haworth-crater.json",
+   "maxHorizonDeg": 10.37,
+   "avgSunPct": 0.0,
+   "avgEarthPct": 5.9,
+   "psr": true,
+   "illumInset": "data/illum/haworth-crater.bin"
+  },
+  {
+   "id": "lupex-target",
+   "name": "ISRO/JAXA LUPEX target (Shackleton-de Gerlache ridge, candidate CR1)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -89.4679,
+   "lonE": -137.411,
+   "quality": "approximate",
+   "sourceUrl": "https://jlpeda.jaxa.jp/en/product/archive/detail_14/",
+   "notes": "No official site yet. ISRO (Dagar et al., LPSC 2024 #1898, hou.usra.edu/meetings/lpsc2024/pdf/1898.pdf) describes the proposed LUPEX site on the Shackleton-de Gerlache ridge (OHRC image centred 89.2836S, 140.556W). JAXA JLPEDA lists six LUPEX candidate sites with 1 m DTMs (Hemmi et al. 2025 PSJ 6:264, Table 1): CR1 -89.4679/-137.411 (connecting ridge; this entry), GR1 -88.6952/-68.2846, GR2 -89.00",
+   "elevM": 1945.0,
+   "horizonUrl": "data/horizons/lupex-target.json",
+   "maxHorizonDeg": 0.54,
+   "avgSunPct": 67.9,
+   "avgEarthPct": 54.4,
+   "psr": false,
+   "illumInset": "data/illum/lupex-target.bin"
+  },
+  {
+   "id": "im-2-athena",
+   "name": "Intuitive Machines IM-2 Athena landing site (Mons Mouton)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -84.7906,
+   "lonE": 29.1957,
+   "quality": "exact",
+   "sourceUrl": "https://lroc.im-ldi.com/images/1408",
+   "notes": "Actual touchdown 6 Mar 2025 inside a ~20 m crater, lander on its side (LROC NAC, 10 Mar 2025). Intended site -84.78/29.13E, 160 km from the pole, 'in the central portion of one of the Artemis 3 potential landing regions' (LROC page 1401) - i.e. the 2024 Mons Mouton Plateau region. Mons Mouton thought to be part of the SPA basin rim; ~6 km high plateau (DLR).",
+   "elevM": 5320.7,
+   "horizonUrl": "data/horizons/im-2-athena.json",
+   "maxHorizonDeg": 4.05,
+   "avgSunPct": 45.6,
+   "avgEarthPct": 92.3,
+   "psr": false,
+   "illumInset": "data/illum/im-2-athena.bin"
+  },
+  {
+   "id": "kocher-crater",
+   "name": "Kocher crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -84.4671,
+   "lonE": -134.0244,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/14535",
+   "notes": "IAU center (225.9756E), diameter 24.03 km; namesake of the 2022 de Gerlache-Kocher Massif region.",
+   "elevM": -4991.4,
+   "horizonUrl": "data/horizons/kocher-crater.json",
+   "maxHorizonDeg": 19.32,
+   "avgSunPct": 0.0,
+   "avgEarthPct": 0.0,
+   "psr": true,
+   "illumInset": "data/illum/kocher-crater.bin"
+  },
+  {
+   "id": "malapert-crater",
+   "name": "Malapert crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -84.9998,
+   "lonE": 11.4031,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/3603",
+   "notes": "IAU center, diameter 72.38 km; Malapert A (NE) was the IM-1 landing area (Feb 2024).",
+   "elevM": -2164.8,
+   "horizonUrl": "data/horizons/malapert-crater.json",
+   "maxHorizonDeg": 16.9,
+   "avgSunPct": 12.3,
+   "avgEarthPct": 52.8,
+   "psr": false,
+   "illumInset": "data/illum/malapert-crater.bin"
+  },
+  {
+   "id": "nobile-crater",
+   "name": "Nobile crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -85.2752,
+   "lonE": 53.2725,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/4321",
+   "notes": "IAU center, diameter 79.27 km; interior almost permanently shadowed; Artemis regions Nobile Rim 1 (SW rim) and Nobile Rim 2 (NE rim); VIPER/Griffin target on its western rim (Mons Mouton).",
+   "elevM": 903.0,
+   "horizonUrl": "data/horizons/nobile-crater.json",
+   "maxHorizonDeg": 7.89,
+   "avgSunPct": 35.7,
+   "avgEarthPct": 29.7,
+   "psr": false,
+   "illumInset": "data/illum/nobile-crater.bin"
+  },
+  {
+   "id": "shackleton-crater",
+   "name": "Shackleton crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -89.67,
+   "lonE": 129.78,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/5450",
+   "notes": "IAU Gazetteer center, diameter 20.92 km; the south pole lies on its rim. Simple bowl, ~4 km deep, 30.5 deg wall slopes; large PSR on the floor (Wang et al. 2023 NSR). Target area of Chang'e-7 (illuminated rim) and ISRO/JAXA LUPEX.",
+   "elevM": -2785.8,
+   "horizonUrl": "data/horizons/shackleton-crater.json",
+   "maxHorizonDeg": 23.52,
+   "avgSunPct": 0.0,
+   "avgEarthPct": 0.0,
+   "psr": true,
+   "illumInset": "data/illum/shackleton-crater.bin"
+  },
+  {
+   "id": "shackleton-rim",
+   "name": "Shackleton rim (best-lit point)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -89.7849,
+   "lonE": -156.03,
+   "quality": "exact",
+   "sourceUrl": "https://ntrs.nasa.gov/api/citations/20170007365/downloads/20170007365.pdf",
+   "notes": "Glaser et al. 2018 Table 1, surface level, 20-year average: 81.0% avg illumination, 85.5% max solar visibility, longest shadow 221 h; at 2 m height the best point shifts to -89.7815/204.70E(-155.30): 82.1%/89.8%, 65 h; cluster S0 85.5%/89.4%. Other studies: Mazarico 2011 -89.78/204.27E (86.7%/90.5%); Speyerer & Robinson 2013 -89.740/201.2E (94% of a lunar year at best rim sites); Bussey 2010 point",
+   "literature": [
+    {
+     "sunPct": 85.5,
+     "heightM": 2,
+     "ref": "Gläser et al. 2018 (20-year average)",
+     "url": "https://ntrs.nasa.gov/api/citations/20170007365/downloads/20170007365.pdf"
+    }
+   ],
+   "elevM": 1715.5,
+   "horizonUrl": "data/horizons/shackleton-rim.json",
+   "maxHorizonDeg": 1.11,
+   "avgSunPct": 71.3,
+   "avgEarthPct": 54.4,
+   "psr": false,
+   "illumInset": "data/illum/shackleton-rim.bin"
+  },
+  {
+   "id": "shoemaker-crater",
+   "name": "Shoemaker crater",
+   "groups": [
+    "reference"
+   ],
+   "lat": -88.137,
+   "lonE": 45.911,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/5494",
+   "notes": "IAU center, diameter 51.82 km, PSR floor (hydrogen-rich). PGDA LOLA_5mpp includes a Shoemaker DEM and 'Shoemaker Rims A-F' sites; Flahaut 2020 'Shoemaker-Faustini ridge' ROI (-87.1, 65.4): Earth visibility 0.38, illumination 0.26, highest H abundance of the 14 ROIs.",
+   "elevM": -3937.9,
+   "horizonUrl": "data/horizons/shoemaker-crater.json",
+   "maxHorizonDeg": 8.35,
+   "avgSunPct": 0.0,
+   "avgEarthPct": 25.7,
+   "psr": true,
+   "illumInset": "data/illum/shoemaker-crater.bin"
+  },
+  {
+   "id": "slater-crater",
+   "name": "Slater crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -88.0792,
+   "lonE": 111.2881,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/15325",
+   "notes": "IAU center, diameter 25.12 km, approved 2015; namesake of the 2024 Slater Plain region (~35 km to its NE).",
+   "elevM": -1744.2,
+   "horizonUrl": "data/horizons/slater-crater.json",
+   "maxHorizonDeg": 8.81,
+   "avgSunPct": 0.0,
+   "avgEarthPct": 23.4,
+   "psr": true,
+   "illumInset": "data/illum/slater-crater.bin"
+  },
+  {
+   "id": "south-pole",
+   "name": "South Pole (90° S)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -89.9999,
+   "lonE": 0.0,
+   "quality": "exact",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/",
+   "notes": "Reference point at the pole, on the rim of Shackleton crater. Latitude stored as −89.9999° so that north is defined along the 0° meridian.",
+   "elevM": 1294.5,
+   "horizonUrl": "data/horizons/south-pole.json",
+   "maxHorizonDeg": 4.51,
+   "avgSunPct": 30.6,
+   "avgEarthPct": 27.8,
+   "psr": false,
+   "illumInset": "data/illum/south-pole.bin"
+  },
+  {
+   "id": "sverdrup-crater",
+   "name": "Sverdrup crater",
+   "groups": [
+    "reference"
+   ],
+   "lat": -88.3209,
+   "lonE": -153.3875,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/5782",
+   "notes": "IAU center (206.6125E), diameter 32.83 km, PSR floor; far side of the pole. Flahaut 2020 ROIs: North Sverdrup (-87.4, -148.2) avg Earth visibility 0.21; West Sverdrup (-88.0, 173.2) 0.33, illumination 0.29. Zhao 2025 lists Sverdrup-BR among higher-illumination CE-7 landing regions.",
+   "elevM": -2883.0,
+   "horizonUrl": "data/horizons/sverdrup-crater.json",
+   "maxHorizonDeg": 14.36,
+   "avgSunPct": 0.0,
+   "avgEarthPct": 5.6,
+   "psr": true,
+   "illumInset": "data/illum/sverdrup-crater.bin"
+  },
+  {
+   "id": "viper-site",
+   "name": "VIPER planned site (Mons Mouton, west of Nobile)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -85.42,
+   "lonE": 31.8,
+   "quality": "approximate",
+   "sourceUrl": "https://svs.gsfc.nasa.gov/5074",
+   "notes": "NASA (20 Sep 2021): VIPER to land in the mountainous area near the western edge of Nobile crater; SVS 5074: 'on Mons Mouton, near the western rim of Nobile'; Nobile study region ~93 km2, 16-24 km traverse, ~100 days, solar power with DTE comms (Earth below horizon ~half of each month -> safe havens). No coordinates published by NASA; this preset uses the Mons Mouton summit region (2022 Leibnitz Be",
+   "elevM": 6429.0,
+   "horizonUrl": "data/horizons/viper-site.json",
+   "maxHorizonDeg": 3.08,
+   "avgSunPct": 63.1,
+   "avgEarthPct": 58.2,
+   "psr": false,
+   "illumInset": "data/illum/viper-site.bin"
+  },
+  {
+   "id": "de-gerlache-crater",
+   "name": "de Gerlache crater (center)",
+   "groups": [
+    "reference"
+   ],
+   "lat": -88.4849,
+   "lonE": -88.3447,
+   "quality": "region",
+   "sourceUrl": "https://planetarynames.wr.usgs.gov/Feature/1439",
+   "notes": "IAU center (271.6553E), diameter 32.71 km, PSR floor (deepest part -2.2 km; CE-7 candidate cold trap).",
+   "elevM": -1191.7,
+   "horizonUrl": "data/horizons/de-gerlache-crater.json",
+   "maxHorizonDeg": 13.82,
+   "avgSunPct": 0.0,
+   "avgEarthPct": 0.0,
+   "psr": true,
+   "illumInset": "data/illum/de-gerlache-crater.bin"
+  },
+  {
+   "id": "apollo-11",
+   "name": "Apollo 11 (Tranquility Base)",
+   "groups": [
+    "apollo"
+   ],
+   "lat": 0.6742,
+   "lonE": 23.4731,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "Lunar module Eagle descent stage, 0°40′27″N 23°28′23″E (LROC-located). First crewed landing, 20 July 1969, Mare Tranquillitatis.",
+   "elevM": -1921.6,
+   "horizonUrl": "data/horizons/apollo-11.json",
+   "maxHorizonDeg": 0.92
+  },
+  {
+   "id": "apollo-12",
+   "name": "Apollo 12 (Ocean of Storms)",
+   "groups": [
+    "apollo"
+   ],
+   "lat": -3.0125,
+   "lonE": -23.4217,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "Lunar module Intrepid descent stage, 3°00′45″S 23°25′18″W, next to Surveyor 3.",
+   "elevM": -1426.7,
+   "horizonUrl": "data/horizons/apollo-12.json",
+   "maxHorizonDeg": 0.36
+  },
+  {
+   "id": "apollo-14",
+   "name": "Apollo 14 (Fra Mauro)",
+   "groups": [
+    "apollo"
+   ],
+   "lat": -3.6453,
+   "lonE": -17.4714,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "Lunar module Antares descent stage, 3°38′43″S 17°28′17″W.",
+   "elevM": -1047.9,
+   "horizonUrl": "data/horizons/apollo-14.json",
+   "maxHorizonDeg": 1.27
+  },
+  {
+   "id": "apollo-15",
+   "name": "Apollo 15 (Hadley–Apennine)",
+   "groups": [
+    "apollo"
+   ],
+   "lat": 26.1322,
+   "lonE": 3.6339,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "Lunar module Falcon descent stage, 26°07′56″N 3°38′02″E, between Hadley Rille and the Apennine mountains.",
+   "elevM": -1938.0,
+   "horizonUrl": "data/horizons/apollo-15.json",
+   "maxHorizonDeg": 12.3
+  },
+  {
+   "id": "apollo-16",
+   "name": "Apollo 16 (Descartes Highlands)",
+   "groups": [
+    "apollo"
+   ],
+   "lat": -8.9731,
+   "lonE": 15.5003,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "Lunar module Orion descent stage, 8°58′23″S 15°30′01″E.",
+   "elevM": 6.9,
+   "horizonUrl": "data/horizons/apollo-16.json",
+   "maxHorizonDeg": 3.82
+  },
+  {
+   "id": "apollo-17",
+   "name": "Apollo 17 (Taurus–Littrow)",
+   "groups": [
+    "apollo"
+   ],
+   "lat": 20.1908,
+   "lonE": 30.7717,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "Lunar module Challenger descent stage, 20°11′27″N 30°46′18″E, in a valley between massifs.",
+   "elevM": -2617.1,
+   "horizonUrl": "data/horizons/apollo-17.json",
+   "maxHorizonDeg": 11.64
+  },
+  {
+   "id": "im-1-odysseus",
+   "name": "IM-1 Odysseus (near Malapert A)",
+   "groups": [
+    "clps"
+   ],
+   "lat": -80.13,
+   "lonE": 1.44,
+   "quality": "exact",
+   "sourceUrl": "https://meetingorganizer.copernicus.org/EGU25/EGU25-20315.html",
+   "notes": "Intuitive Machines Nova-C, landed 22 Feb 2024 at 80.13°S 1.44°E on a ~12° slope east of Malapert A (LROC imaging). First CLPS landing.",
+   "elevM": 2588.1,
+   "horizonUrl": "data/horizons/im-1-odysseus.json",
+   "maxHorizonDeg": 11.11,
+   "avgSunPct": 40.5,
+   "avgEarthPct": 100.0,
+   "psr": false,
+   "illumInset": "data/illum/im-1-odysseus.bin"
+  },
+  {
+   "id": "blue-ghost-1",
+   "name": "Blue Ghost Mission 1 (Mons Latreille)",
+   "groups": [
+    "clps"
+   ],
+   "lat": 18.5622,
+   "lonE": 61.8103,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "Firefly Blue Ghost lander, landed 2 March 2025 near Mons Latreille in Mare Crisium, 18°33′44″N 61°48′37″E.",
+   "elevM": -3645.6,
+   "horizonUrl": "data/horizons/blue-ghost-1.json",
+   "maxHorizonDeg": 0.48
+  },
+  {
+   "id": "im-3-reiner-gamma",
+   "name": "IM-3 target (Reiner Gamma swirl)",
+   "groups": [
+    "clps"
+   ],
+   "lat": 7.5,
+   "lonE": -59.0,
+   "quality": "approximate",
+   "sourceUrl": "https://www.nasa.gov/commercial-lunar-payload-services/clps-landing-sites/",
+   "notes": "Intuitive Machines IM-3 target region, the Reiner Gamma magnetic swirl; approximate centre of the feature, not a published landing point.",
+   "elevM": -1751.9,
+   "horizonUrl": "data/horizons/im-3-reiner-gamma.json",
+   "maxHorizonDeg": 0.19
+  },
+  {
+   "id": "change-3",
+   "name": "Chang'e 3 (Mare Imbrium)",
+   "groups": [
+    "international"
+   ],
+   "lat": 44.1167,
+   "lonE": -19.5167,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "CNSA lander with the Yutu rover, landed 14 Dec 2013, 44°07′N 19°31′W.",
+   "elevM": -2630.7,
+   "horizonUrl": "data/horizons/change-3.json",
+   "maxHorizonDeg": 0.18
+  },
+  {
+   "id": "change-4",
+   "name": "Chang'e 4 (far side, Von Kármán)",
+   "groups": [
+    "international"
+   ],
+   "lat": -45.4561,
+   "lonE": 177.5886,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "CNSA lander, first far-side landing, 3 Jan 2019, 45°27′22″S 177°35′19″E. Earth is never in view from the far side.",
+   "elevM": -5929.8,
+   "horizonUrl": "data/horizons/change-4.json",
+   "maxHorizonDeg": 2.84
+  },
+  {
+   "id": "change-5",
+   "name": "Chang'e 5 (Oceanus Procellarum)",
+   "groups": [
+    "international"
+   ],
+   "lat": 43.0575,
+   "lonE": -51.9161,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "CNSA sample-return descent stage, 1 Dec 2020, 43°03′27″N 51°54′58″W.",
+   "elevM": -2544.2,
+   "horizonUrl": "data/horizons/change-5.json",
+   "maxHorizonDeg": 1.05
+  },
+  {
+   "id": "change-6",
+   "name": "Chang'e 6 (far side, Apollo basin)",
+   "groups": [
+    "international"
+   ],
+   "lat": -41.6385,
+   "lonE": -153.9852,
+   "quality": "exact",
+   "sourceUrl": "https://www.nasa.gov/centers-and-facilities/goddard/nasas-lro-spots-chinas-change-6-spacecraft-on-lunar-far-side",
+   "notes": "CNSA far-side sample return, landed 1 June 2024; LROC position 41.6385°S 206.0148°E (153.9852°W).",
+   "elevM": -5255.4,
+   "horizonUrl": "data/horizons/change-6.json",
+   "maxHorizonDeg": 3.01
+  },
+  {
+   "id": "chandrayaan-3",
+   "name": "Chandrayaan-3 Vikram (high southern latitude)",
+   "groups": [
+    "international"
+   ],
+   "lat": -69.3731,
+   "lonE": 32.3189,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "ISRO lander, 23 Aug 2023, 69°22′23″S 32°19′08″E; the first landing at high southern latitude.",
+   "elevM": 535.6,
+   "horizonUrl": "data/horizons/chandrayaan-3.json",
+   "maxHorizonDeg": 2.22,
+   "avgSunPct": 48.3,
+   "avgEarthPct": 100.0,
+   "psr": false,
+   "illumInset": "data/illum/chandrayaan-3.bin"
+  },
+  {
+   "id": "slim",
+   "name": "SLIM (Shioli crater, JAXA)",
+   "groups": [
+    "international"
+   ],
+   "lat": -13.3161,
+   "lonE": 25.2511,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "JAXA precision lander, 19 Jan 2024, 13°18′58″S 25°15′04″E; landed on its nose, which limited solar power.",
+   "elevM": -910.8,
+   "horizonUrl": "data/horizons/slim.json",
+   "maxHorizonDeg": 6.5
+  },
+  {
+   "id": "luna-9",
+   "name": "Luna 9 (first soft landing)",
+   "groups": [
+    "international"
+   ],
+   "lat": 7.0833,
+   "lonE": -64.3667,
+   "quality": "exact",
+   "sourceUrl": "https://en.wikipedia.org/wiki/List_of_artificial_objects_on_the_Moon",
+   "notes": "USSR, first soft landing on the Moon, 3 Feb 1966, 7°05′N 64°22′W in Oceanus Procellarum.",
+   "elevM": -1243.4,
+   "horizonUrl": "data/horizons/luna-9.json",
+   "maxHorizonDeg": 2.35
+  }
+ ],
+ "illumination": {
+  "product": "NASA LOLA average visibility of the Sun and Earth and permanently shadowed regions, 240 m/pixel to 65 S (PDS LOLA extras illumination, release 2016-08; Mazarico et al.)",
+  "groundLevel": true
+ }
+}
