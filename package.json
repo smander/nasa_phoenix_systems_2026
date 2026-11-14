@@ -1,0 +1,48 @@
+{
+  "name": "polar-window",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Lunar south pole Sun & Earth planner: compare landing points and dates by Sun and Earth visibility above the real terrain horizon (NASA Space Apps 2026).",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18.16"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run tokens && vite build",
+    "preview": "vite preview --port 4173",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "tokens": "node packages/design-system/build_tokens.cjs",
+    "pipeline": ".venv/bin/python -m pipeline.run_all",
+    "fixtures": ".venv/bin/python -m pipeline.horizons_fixtures",
+    "nn": "vite-node tools/nn/nn_dataset.ts && .venv/bin/python -m pipeline.train_lstm",
+    "saple": "vite-node tools/saple/saple_check.ts",
+    "saple:batch": "vite-node tools/saple/saple_check.ts --batch 20"
+  },
+  "dependencies": {
+    "@types/three": "^0.160.0",
+    "@types/topojson-client": "^3.1.5",
+    "astronomy-engine": "2.1.19",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "^0.160.0",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2",
+    "zustand": "4.5.7"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.3",
+    "@types/node": "18.19.130",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "@vitejs/plugin-react": "4.7.0",
+    "jsdom": "24.1.3",
+    "typescript": "5.5.4",
+    "vite": "5.4.21",
+    "vitest": "2.1.9"
+  }
+}
