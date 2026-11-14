@@ -1,0 +1,20 @@
+// Plain-language definitions (design brief, section 13). Teach mode turns these into pop-ups.
+export const GLOSSARY: Record<string, { term: string; definition: string }> = {
+  azimuth: { term: 'Azimuth', definition: 'Compass direction along the horizon: 0° north, 90° east.' },
+  elevation: { term: 'Elevation', definition: 'Angle above the flat horizon; negative means below it.' },
+  horizon: { term: 'Terrain horizon', definition: 'The skyline of hills and crater rims around the point; it can sit above or below 0°.' },
+  observer: { term: 'Observer height', definition: 'How high the camera or solar mast is above the ground; higher sees over more terrain.' },
+  libration: { term: 'Libration', definition: "The Moon's slight rocking as seen from Earth, which makes Earth wander a few degrees in the lunar sky." },
+  lunarDay: { term: 'Lunar day', definition: '29.5 Earth days, the time for the Sun to circle the sky once.' },
+  dte: { term: 'Direct-to-Earth (DTE)', definition: 'Radio contact straight to Earth, without a relay satellite; needs Earth in line of sight.' },
+  lineOfSight: { term: 'Line of sight', definition: "Any part of Earth's disc above the terrain; it does not guarantee that a ground station is pointing at the Moon." },
+  earthPhase: { term: 'Earth phase', definition: "How much of Earth looks sunlit from the Moon; it is the opposite of the Moon's phase seen from Earth." },
+  verticalArray: { term: 'Vertical solar array', definition: 'Panels standing upright and turning to face the low Sun; the standard design at the poles.' },
+  psr: { term: 'Permanently shadowed region', definition: 'Crater floors near the poles that never see sunlight.' },
+  feasible: { term: 'Feasible landing date', definition: 'A start time when the Sun stays up for the whole stay.' },
+  battery: { term: 'Battery reserve', definition: 'How many hours of darkness the stored energy can cover.' },
+  lola: { term: 'LOLA', definition: "NASA's Lunar Orbiter Laser Altimeter; its elevation maps give the terrain horizons." },
+  horizons: { term: 'JPL Horizons', definition: "NASA's ephemeris service; used to validate Sun and Earth positions." },
+  saple: { term: 'SAPLE', definition: 'A formal verification engine; it checks mission rules against a process-algebra model of the stay.' },
+  rules: { term: 'Invariant / reachable / unreachable', definition: 'A rule that must hold every hour / a state that must happen at least once / a state that must never happen.' },
+};
