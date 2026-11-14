@@ -1,4 +1,4 @@
-<p align="center"><img src="public/brand/phoenix-systems-logo.png" width="360" alt="Phoenix Systems"></p>
+<p align="center"><img src="apps/web/public/brand/phoenix-systems-logo.png" width="360" alt="Phoenix Systems"></p>
 
 # Polar Window
 
