@@ -1,0 +1,15 @@
+<!-- @dsCard group="Verification" height=330 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Terminal — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+function D(){var s=React.useState(0);return h('div',{className:'pw-stack'},h(PW.Terminal,{title:'polar_window_malapert_massif.sbl',typeOn:true,runKey:s[0],
+ code:h(React.Fragment,null,h('span',{className:'k'},'agent'),' Sky = ',h('span',{className:'t'},'tick(77)'),' . earthRise() . ',h('span',{className:'t'},'tick(79)'),' . done\n',h('span',{className:'c'},'// Lander downlinks only while earth == UP')),
+ output:['$ saple analyze polar_window_malapert_massif.sbl --verbose','  SunlitStay    invariant   ✓ holds','  BatterySafe   invariant   ✓ holds','  DteWindow     reachable   ✓ holds','  DteCoverage   invariant   ✓ holds','  Blackout      unreachable ✓ holds','  5 of 5 rules hold']}),h(PW.Button,{variant:'quiet',onClick:function(){s[1](s[0]+1);}},'Run again'));}
+ReactDOM.createRoot(document.getElementById('root')).render(h(D));
+</script>
+</body>
+</html>

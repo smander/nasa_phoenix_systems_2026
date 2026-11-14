@@ -1,0 +1,15 @@
+<!-- @dsCard group="Charts" height=170 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>MonthBar — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-stack'},
+ h(PW.MonthBar,{segments:[{from:0,to:.28,state:'sun'},{from:.28,to:.78,state:'both'},{from:.78,to:.86,state:'earth'},{from:.86,to:1,state:'none'}],playhead:.5}),
+ h(PW.MonthBar,{lanes:{sun:[[.04,.33],[.5,.92]],earth:[[.16,.88]]},window:[.04,.25],violations:[.29],ticks:[[0,'Jan 1'],[.5,'Jan 16'],[1,'Jan 31']]}),
+ h('div',{className:'pw-key'},h('span',null,h('i',{style:{background:'var(--both)'}}),'Power and contact'),h('span',null,h('i',{style:{background:'var(--sun)'}}),'Power only'),h('span',null,h('i',{style:{background:'var(--earth)'}}),'Contact only'),h('span',null,h('i',{className:'none'}),'Blackout'))));
+</script>
+</body>
+</html>

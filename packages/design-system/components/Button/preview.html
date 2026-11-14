@@ -1,0 +1,12 @@
+<!-- @dsCard group="Actions" height=72 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Button — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-row'},h(PW.Button,{variant:'primary'},'See results →'),h(PW.Button,{variant:'quiet'},'Copy link'),h(PW.Button,{variant:'quiet',disabled:true,title:'Up to 8 points can be compared'},'Add point'),h(PW.PlayButton,{playing:false}),h(PW.PlayButton,{playing:true})));
+</script>
+</body>
+</html>

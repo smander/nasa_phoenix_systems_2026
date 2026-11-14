@@ -1,0 +1,12 @@
+<!-- @dsCard group="Help" height=90 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>HonestyNote — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-stack'},h('div',{className:'pw-row',style:{padding:0}},h(PW.HonestyNote,null,'relief shading, not lighting'),h(PW.HonestyNote,null,'Earth visible = line of sight, not a ground-station pass'),h(PW.HonestyNote,null,'≤ 0.01° vs JPL Horizons (0.002° typical)')),h('div',{className:'pw-onsky'},h(PW.HonestyNote,{onSky:true},'elevation ×5'))));
+</script>
+</body>
+</html>

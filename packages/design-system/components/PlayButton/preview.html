@@ -1,0 +1,13 @@
+<!-- @dsCard group="Actions" height=72 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>PlayButton — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+function D(){var s=React.useState(false);return h('div',{className:'pw-row'},h(PW.PlayButton,{playing:s[0],onClick:function(){s[1](!s[0]);}}),h('span',{className:'pw-note'},s[0]?'playing the month':'paused'));}
+ReactDOM.createRoot(document.getElementById('root')).render(h(D));
+</script>
+</body>
+</html>

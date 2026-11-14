@@ -1,0 +1,12 @@
+<!-- @dsCard group="Help" height=170 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>GlossaryTip — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-stack'},h('p',{style:{margin:0,maxWidth:'60ch'}},'Earth bobs up and down by about ±7° over 27 days because of ',h(PW.GlossaryTip,{term:'Libration',defaultOpen:true,definition:'The Moon\u2019s slight rocking as seen from Earth, which makes Earth wander a few degrees in the lunar sky.'},'libration'),'.')));
+</script>
+</body>
+</html>

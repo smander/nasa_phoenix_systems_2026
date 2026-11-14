@@ -1,0 +1,12 @@
+<!-- @dsCard group="Status" height=64 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>QualityBadge — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-row'},h(PW.QualityBadge,{quality:'region'}),h(PW.QualityBadge,{quality:'exact'}),h(PW.QualityBadge,{quality:'approximate',source:'Digitised from NASA map'}),h(PW.QualityBadge,{quality:'custom',label:'custom point, terrain 480 m'})));
+</script>
+</body>
+</html>

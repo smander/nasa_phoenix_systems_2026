@@ -1,0 +1,13 @@
+<!-- @dsCard group="Status" height=200 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Skeleton — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+function D(){var s=React.useState(.1);React.useEffect(function(){var t=setInterval(function(){s[1](function(v){return v>=1?.1:v+.06;});},400);return function(){clearInterval(t);};},[]);return h('div',{className:'pw-stack'},h(PW.Skeleton,{height:110,progress:s[0],label:'Computing 90 days · 3-hour steps'}));}
+ReactDOM.createRoot(document.getElementById('root')).render(h(D));
+</script>
+</body>
+</html>

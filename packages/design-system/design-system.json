@@ -1,0 +1,51 @@
+{
+  "v": 3,
+  "assetGroups": {
+    "Logos": {
+      "files": {
+        "polar-window-mark.svg": {
+          "blob": "e801433f265c08fefb28f51c23fc23df",
+          "name": "polar-window-mark.svg",
+          "size": 656,
+          "type": "image/svg+xml"
+        }
+      },
+      "name": "Logos",
+      "order": [
+        "polar-window-mark.svg"
+      ],
+      "tile": "l"
+    }
+  },
+  "blobs": {},
+  "createdOnFiles": {
+    "at": "2026-10-12T13:07:50Z",
+    "v": 1
+  },
+  "docs": {
+    "readme": "project/README.md",
+    "sections": []
+  },
+  "groups": [
+    "Logos"
+  ],
+  "lastChange": {
+    "at": "2026-10-12T13:07:50Z",
+    "by": "Alex",
+    "note": "Initial system from Polar Window v2 (Concept A, Mission Console) plus motion and signature components."
+  },
+  "layout": "files",
+  "libraries": [
+    {
+      "name": "react",
+      "version": "18"
+    },
+    {
+      "name": "react-dom",
+      "version": "18"
+    }
+  ],
+  "namespace": "PolarWindow",
+  "sections": {},
+  "title": "Polar Window"
+}

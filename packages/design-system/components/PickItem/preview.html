@@ -1,0 +1,14 @@
+<!-- @dsCard group="Selection" height=250 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>PickItem — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-stack',style:{maxWidth:520}},
+ h(PW.PickItem,{name:'Malapert Massif',quality:'region',meta:'Artemis region (2022 & 2024) · −85.980°, −0.26° · +4.82 km',sun:69,earth:75,selected:true,segments:[{from:0,to:.2,state:'sun'},{from:.2,to:.74,state:'both'},{from:.74,to:.9,state:'sun'},{from:.9,to:1,state:'none'}]}),
+ h(PW.PickItem,{name:'Mons Mouton',quality:'approximate',source:'Digitised from NASA map, Oct 2024 list',meta:'Artemis region (2024) · −85.426°, +31.83° · +6.41 km',sun:100,earth:45,segments:[{from:0,to:.45,state:'both'},{from:.45,to:1,state:'sun'}]})));
+</script>
+</body>
+</html>
