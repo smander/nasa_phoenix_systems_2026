@@ -1,0 +1,1 @@
+{"n": 321, "halfWidthM": 240000.0, "spacingM": 1500.0, "heightScale": 0.5, "rows": "row 0 = +Y (0 deg longitude), column 0 = -X (90 W)", "source": "LOLA ldem_75s_240m, box-averaged", "bin": "data/terrain3d.bin"}

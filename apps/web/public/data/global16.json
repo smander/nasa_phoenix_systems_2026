@@ -1,0 +1,1 @@
+{"ppd": 16, "tileDeg": 15, "px": 240, "heightScale": 0.5, "pattern": "data/global16/{lat0}_{lon0}.bin", "rows": "row 0 = northern edge lat0; column 0 = western edge lon0 (0-345 E); pixel-registered", "source": "NASA LRO LOLA ldem_16 (16 px/deg, simple cylindrical, heights relative to 1737.4 km)"}
