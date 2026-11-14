@@ -1,0 +1,64 @@
+{
+ "saple": {
+  "version": "saple 0.2.0",
+  "commit": "a573a58"
+ },
+ "date": "2026-11-12",
+ "missions": 1350,
+ "sites": 54,
+ "period": "2026–2029",
+ "grids": "hourly and three-hourly",
+ "allRulesSame": 1350,
+ "incomplete": 0,
+ "withWarnings": 0,
+ "failedRuns": 0,
+ "maxEventsInAStay": 13,
+ "msPerRun": 153.5,
+ "rules": [
+  {
+   "id": "SunlitStay",
+   "holds": 213,
+   "fails": 1137,
+   "sameVerdict": 1350,
+   "hoursCompared": 1137,
+   "sameHour": 1137,
+   "lstm": 1350
+  },
+  {
+   "id": "BatterySafe",
+   "holds": 421,
+   "fails": 929,
+   "sameVerdict": 1350,
+   "hoursCompared": 929,
+   "sameHour": 929,
+   "lstm": 1349
+  },
+  {
+   "id": "DteWindow",
+   "holds": 1007,
+   "fails": 343,
+   "sameVerdict": 1350,
+   "hoursCompared": 0,
+   "sameHour": 0,
+   "lstm": 1350
+  },
+  {
+   "id": "DteCoverage",
+   "holds": 780,
+   "fails": 570,
+   "sameVerdict": 1350,
+   "hoursCompared": 0,
+   "sameHour": 0,
+   "lstm": 1347
+  },
+  {
+   "id": "Blackout",
+   "holds": 667,
+   "fails": 683,
+   "sameVerdict": 1350,
+   "hoursCompared": 683,
+   "sameHour": 683,
+   "lstm": 1350
+  }
+ ]
+}

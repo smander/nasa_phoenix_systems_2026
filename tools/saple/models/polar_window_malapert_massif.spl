@@ -1,0 +1,126 @@
+// Polar Window mission model for Malapert Massif
+// Point 85.9799° S, 0.2558° W, observer 2 m above the ground.
+// Landing 2027-01-09 00:00 UTC, stay 156 h.
+// Inputs: the same numbers the neural networks read. For every hour of the stay, how far
+// the Sun and the Earth stand above the terrain skyline at this point (NASA LOLA horizon
+// and ephemeris), then the battery reserve, the Earth contact needed and the stay length.
+// Check it with: saple analyze <this file> --no-auto-load
+type Vis = { DOWN, UP } ;
+type NorthSouth = { SOUTH, NORTH } ;
+type EastWest = { WEST, EAST } ;
+
+schema Mission {
+    attributes {
+        latDeg : Real = 85.9799 ;   // the landing point
+        latSide : NorthSouth = SOUTH ;
+        lonDeg : Real = 0.2558 ;
+        lonSide : EastWest = WEST ;
+        observerM : Real = 2.0 ;    // height above the ground
+        stayH : Int = 156 ;         // length of the stay, hours
+        capacityH : Int = 50 ;      // hours of darkness the battery covers
+        needPct : Int = 25 ;        // Earth contact needed, % of the stay
+        // Margin above the skyline in thousandths of a degree, one value per hour.
+        // Positive: visible. Negative: hidden behind the terrain. Clipped to 6 degrees.
+        sunMargin : Array(Int, 156) = [
+        1061,  1054,  1044,  1026,  1020,  1010,   994,   989,   979,   964,   955,   941,
+         931,   913,   901,   891,   874,   842,   795,   748,   701,   655,   609,   563,
+         517,   472,   427,   373,   323,   279,   235,   191,   137,    90,    47,     5,
+         -49,   -95,  -148,  -193,  -234,  -288,  -318,  -356,  -383,  -409,  -447,  -473,
+        -496,  -520,  -544,  -570,  -610,  -659,  -709,  -759,  -808,  -857,  -894,  -943,
+        -992, -1040, -1089, -1134, -1172, -1219, -1266, -1311, -1348, -1386, -1392, -1393,
+       -1400, -1400, -1419, -1462, -1506, -1545, -1582, -1624, -1667, -1709, -1747, -1783,
+       -1815, -1812, -1788, -1797, -1834, -1873, -1907, -1942, -1981, -2020, -2059, -2050,
+       -2011, -2036, -2124, -2208, -2282, -2354, -2425, -2497, -2578, -2653, -2708, -2763,
+       -2830, -2890, -2943, -2986, -2984, -2973, -2992, -3026, -3063, -3104, -3151, -3196,
+       -3226, -3259, -3292, -3327, -3363, -3402, -3434, -3466, -3492, -3518, -3545, -3568,
+       -3590, -3597, -3574, -3553, -3537, -3525, -3515, -3506, -3483, -3438, -3394, -3350,
+       -3305, -3261, -3214, -3166, -3118, -3069, -3020, -2975, -2919, -2848, -2787, -2726
+        ] ;
+        earthMargin : Array(Int, 156) = [
+        3713,  3768,  3823,  3878,  3933,  3988,  4044,  4100,  4157,  4215,  4272,  4330,
+        4389,  4447,  4505,  4564,  4623,  4680,  4738,  4795,  4853,  4910,  4968,  5026,
+        5084,  5142,  5201,  5261,  5321,  5381,  5441,  5501,  5561,  5621,  5682,  5741,
+        5800,  5859,  5917,  5976,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,
+        6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,
+        6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,
+        6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,
+        6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,
+        6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,
+        6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,
+        6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,
+        6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,
+        6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000,  6000
+        ] ;
+        sun : Vis = UP ;            // at landing
+        earth : Vis = UP ;          // at landing
+        clockH : Int = 0 ;          // hours since landing
+        reserveH : Int = 50 ;       // hours of battery left
+        contactH : Int = 0 ;        // hours with Earth in view so far
+        blackoutH : Int = 0 ;       // hours with neither Sun nor Earth so far
+        going : Int = 0 ;           // used inside wait()
+        ended : Int = 0 ;           // 1 after lift-off
+    }
+}
+
+// The Sun and the Earth rise and set in the hour their margin changes sign.
+transition sunSet() {
+    guard:  clockH < stayH && sun == UP && sunMargin[clockH] <= 0 ;
+    effect: sun := DOWN ;
+}
+transition sunRise() {
+    guard:  clockH < stayH && sun == DOWN && sunMargin[clockH] > 0 ;
+    effect: sun := UP ; reserveH := capacityH ;   // sunlight recharges
+}
+transition earthSet() {
+    guard:  clockH < stayH && earth == UP && earthMargin[clockH] <= 0 ;
+    effect: earth := DOWN ;
+}
+transition earthRise() {
+    guard:  clockH < stayH && earth == DOWN && earthMargin[clockH] > 0 ;
+    effect: earth := UP ;
+}
+
+// Time passes hour by hour until the Sun or the Earth changes, or the stay ends.
+// A rise or set that is due now goes first.
+transition wait() {
+    guard: clockH < stayH && ((sun == UP) <=> (sunMargin[clockH] > 0))
+                          && ((earth == UP) <=> (earthMargin[clockH] > 0)) ;
+    effect:
+        going := 1 ;
+        for (h : Int) in [clockH..stayH) {
+            if (going == 1 && ((sun == UP) <=> (sunMargin[h] > 0))
+                           && ((earth == UP) <=> (earthMargin[h] > 0))) then {
+                if (sun == DOWN) then { reserveH -= 1 } else { skip } ;
+                if (earth == UP) then { contactH += 1 } else { skip } ;
+                if (sun == DOWN && earth == DOWN) then { blackoutH += 1 } else { skip } ;
+                clockH += 1
+            } else { going := 0 }
+        } ;
+}
+transition liftOff() { guard: clockH == stayH && ended == 0 ; effect: ended := 1 ; }
+
+agent Sun() {
+    attributes { }
+    process { S = sunSet() . S + sunRise() . S + [clockH == stayH] done ; }
+}
+agent Earth() {
+    attributes { }
+    process { E = earthSet() . E + earthRise() . E + [clockH == stayH] done ; }
+}
+agent Lander() {
+    attributes { }
+    process { Stay = wait() . Stay + liftOff() . done ; }
+}
+
+system LunarStay {
+    schema: Mission ;
+    agents { Sun() * 1 ; Earth() * 1 ; Lander() * 1 ; }
+    init { clockH == 0 && ended == 0 ; }
+}
+
+property invariant   SunlitStay   { sun == UP }
+property invariant   BatterySafe  { reserveH >= 0 }
+property reachable   DteWindow    { earth == UP }
+property invariant   DteCoverage  { ended == 0 || contactH * 100 >= needPct * stayH }
+property unreachable Blackout     { blackoutH > 0 }
+property reachable   StayComplete { ended == 1 }   // the walk must reach lift-off

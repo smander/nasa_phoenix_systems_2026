@@ -1,0 +1,83 @@
+// Polar Window mission model for Shackleton rim (best-lit point)
+// Landing 2027-01-21 00:00 UTC, stay 240 h, observer 2 m above the ground.
+// Sun and Earth events from the NASA LOLA terrain horizon and the ephemeris.
+// Check it with: saple analyze <this file> --no-auto-load
+type Vis = { DOWN, UP } ;
+
+schema Mission {
+    attributes {
+        sun : Vis = UP ;            // at landing
+        earth : Vis = UP ;          // at landing
+        clockH : Int = 0 ;          // hours since landing
+        stayH : Int = 240 ;         // length of the stay
+        nextSun : Int = 240 ;       // hour of the next Sun event, or stayH
+        nextEarth : Int = 81 ;      // hour of the next Earth event, or stayH
+        capacityH : Int = 20 ;      // hours of darkness the battery covers
+        reserveH : Int = 20 ;       // hours of battery left
+        needPct : Int = 60 ;        // Earth contact needed, % of the stay
+        contactH : Int = 0 ;        // hours with Earth in view so far
+        blackoutH : Int = 0 ;       // hours with neither Sun nor Earth so far
+        ended : Int = 0 ;           // 1 after lift-off
+    }
+}
+
+transition sunSet(next : Int) {
+    guard:  sun == UP ;
+    effect: sun := DOWN ; nextSun := next ;
+}
+transition sunRise(next : Int) {
+    guard:  sun == DOWN ;
+    effect: sun := UP ; reserveH := capacityH ; nextSun := next ;   // sunlight recharges
+}
+transition earthSet(next : Int) {
+    guard:  earth == UP ;
+    effect: earth := DOWN ; nextEarth := next ;
+}
+transition earthRise(next : Int) {
+    guard:  earth == DOWN ;
+    effect: earth := UP ; nextEarth := next ;
+}
+
+// Time passes until the next Sun or Earth event. An event due now goes first.
+transition wait() {
+    guard: clockH < nextSun && clockH < nextEarth ;
+    effect:
+        let h = min(nextSun, nextEarth) - clockH ;
+        if (sun == DOWN) then { reserveH -= h } else { skip } ;
+        if (earth == UP) then { contactH += h } else { skip } ;
+        if (sun == DOWN && earth == DOWN) then { blackoutH += h } else { skip } ;
+        clockH += h ;
+}
+transition liftOff() { guard: clockH == stayH && ended == 0 ; effect: ended := 1 ; }
+
+agent Sun() {
+    attributes { }
+    process {
+        S0 = done ;
+    }
+}
+agent Earth() {
+    attributes { }
+    process {
+        E0 = [clockH == 81] earthSet(240) . done ;
+    }
+}
+agent Lander() {
+    attributes { }
+    process {
+        Stay = wait() . Stay + liftOff() . done ;
+    }
+}
+
+system LunarStay {
+    schema: Mission ;
+    agents { Sun() * 1 ; Earth() * 1 ; Lander() * 1 ; }
+    init { clockH == 0 && ended == 0 ; }
+}
+
+property invariant   SunlitStay   { sun == UP }
+property invariant   BatterySafe  { reserveH >= 0 }
+property reachable   DteWindow    { earth == UP }
+property invariant   DteCoverage  { ended == 0 || contactH * 100 >= needPct * stayH }
+property unreachable Blackout     { blackoutH > 0 }
+property reachable   StayComplete { ended == 1 }   // the walk must reach lift-off
