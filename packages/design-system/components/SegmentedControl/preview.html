@@ -1,0 +1,12 @@
+<!-- @dsCard group="Controls" height=120 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>SegmentedControl — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-stack'},h(PW.SegmentedControl,{label:'Mode',value:undefined,options:[{value:'explore',label:'Explore'},{value:'teach',label:'Teach'},{value:'plan',label:'Plan'}]}),h(PW.SegmentedControl,{label:'Stay length',options:[{value:6.5,label:'6.5 days'},{value:10,label:'10 days'},{value:14,label:'14 days'}]})));
+</script>
+</body>
+</html>

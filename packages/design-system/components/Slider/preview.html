@@ -1,0 +1,12 @@
+<!-- @dsCard group="Controls" height=110 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Slider — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-row',style:{gap:32}},h(PW.Slider,{label:'Battery reserve',min:0,max:120,value:50,unit:'h'}),h(PW.Slider,{label:'Earth contact needed',min:0,max:100,value:25,unit:'%'}),h(PW.Slider,{label:'Observer height',min:0,max:50,value:2,unit:'m'})));
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!-- @dsCard height=320 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Polar Window — cover</title>
+<style>
+  html, body { margin: 0; background: var(--bg); }
+  .cover { position: relative; width: 960px; height: 320px; overflow: hidden; background: var(--bg); }
+  .cover svg { position: absolute; inset: 0; }
+  .sun { fill: var(--sun); }
+  .earth { fill: var(--earth); }
+  .cut { fill: var(--bg); }
+  .both { fill: var(--both); }
+  .terrain { fill: var(--terrain); }
+  .ridge { fill: none; stroke: var(--ridge); stroke-width: 1.5px; }
+  .band { rx: var(--radius-xs); }
+  .slab { rx: var(--radius-xl); }
+  .text { position: absolute; left: 40px; bottom: 36px; max-width: 440px; }
+  .name { margin: 0; font-family: var(--font-display); font-stretch: 125%; font-weight: 750; font-size: 96px; line-height: .95; letter-spacing: -.01em; color: var(--fg); }
+  .tag { margin: 12px 0 0; font-family: var(--font-text); font-size: 14px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="cover">
+  <svg width="960" height="320" viewBox="0 0 960 320" aria-hidden="true">
+    <!--
+      blocks: sun half-disc r=88 (space-44 x2), terrain slab 480x124 (radius-xl), earth disc r=40 with a bg-cut crescent, month strip of sun/both/earth bands 16px high (space-16)
+      arrangement: one horizon — a terrain slab bleeding off the right and bottom, the Sun half-risen behind it, Earth high on the right, the month bar cut into the slab
+      pattern: literal motif — the Sun and Earth as discs and half-rounds against the horizon, chosen because the whole product is "where are the Sun and Earth relative to the ridge"
+      scales: space-16, space-24, space-44; radius-xs on bands, radius-xl on the slab, discs at half their short side
+    -->
+    <circle class="sun" cx="640" cy="200" r="88"/>
+    <circle class="earth" cx="848" cy="88" r="40"/>
+    <circle class="cut" cx="868" cy="80" r="40"/>
+    <rect class="terrain slab" x="500" y="196" width="484" height="148"/>
+    <path class="ridge" d="M516 196 H600"/>
+    <rect class="sun band" x="524" y="276" width="132" height="16"/>
+    <rect class="both band" x="664" y="276" width="168" height="16"/>
+    <rect class="earth band" x="840" y="276" width="60" height="16"/>
+  </svg>
+  <div class="text">
+    <h1 class="name">Polar<br>Window</h1>
+    <p class="tag">Sun, Earth and the terrain horizon at the lunar south pole.</p>
+  </div>
+</div>
+</body>
+</html>

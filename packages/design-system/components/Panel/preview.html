@@ -1,0 +1,14 @@
+<!-- @dsCard group="Layout" height=300 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Panel — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-stack',style:{maxWidth:560}},h(PW.Panel,{title:'Energy per day',description:'Best day 10.2 kWh/m² · 7 days with no sunlight',note:'vertical tracking array, 30% cells',
+ table:h('table',{style:{fontSize:13,width:'100%'}},h('tbody',null,h('tr',null,h('td',null,'Jan 1'),h('td',{className:'pw-mono'},'9.8')),h('tr',null,h('td',null,'Jan 2'),h('td',{className:'pw-mono'},'10.2'))))},
+ h('svg',{viewBox:'0 0 310 90',style:{display:'block',width:'100%'}},Array.from({length:31},function(_,i){var v=Math.max(0,Math.sin((i+3)/31*Math.PI*2)*.5+.55)*(i>23&&i<31?0:1);return v===0?h('rect',{key:i,x:i*10+1,y:84,width:8,height:2,fill:'var(--muted)'}):h('rect',{key:i,x:i*10+1,y:86-v*80,width:8,height:v*80,rx:1.5,fill:'var(--sun)'});}),h('line',{x1:0,x2:310,y1:86.5,y2:86.5,stroke:'var(--line-2)'})))));
+</script>
+</body>
+</html>

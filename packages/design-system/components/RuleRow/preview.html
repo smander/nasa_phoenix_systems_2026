@@ -1,0 +1,19 @@
+<!-- @dsCard group="Verification" height=330 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>RuleRow — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+function D(){var s=React.useState(false),v=s[0];return h('div',{className:'pw-stack'},
+ h('div',{className:'pw-rules'},
+ h(PW.RuleRow,{name:'SunlitStay',expr:'sun == UP',kind:'invariant',verdict:v?'violated':'holds',at:'Jan 9 14:00',why:'Sunlight on the arrays every hour of the stay.'}),
+ h(PW.RuleRow,{name:'BatterySafe',expr:'reserveH >= 0',kind:'invariant',verdict:'holds',why:'No dark spell longer than the battery covers.'}),
+ h(PW.RuleRow,{name:'DteWindow',expr:'earth == UP',kind:'reachable',verdict:'holds',why:'Earth comes into view at least once.'}),
+ h(PW.RuleRow,{name:'Blackout',expr:'sun == DOWN && earth == DOWN',kind:'unreachable',verdict:'preview',why:'Never without both power and contact.'})),
+ h(PW.Button,{variant:'quiet',onClick:function(){s[1](!v);}},v?'Land Jan 2 06:00':'Land Jan 9 instead'));}
+ReactDOM.createRoot(document.getElementById('root')).render(h(D));
+</script>
+</body>
+</html>

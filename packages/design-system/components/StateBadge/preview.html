@@ -1,0 +1,12 @@
+<!-- @dsCard group="Status" height=150 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>StateBadge — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-stack'},h('div',{className:'pw-onsky'},h(PW.StateBadge,{state:'both'}),h(PW.StateBadge,{state:'sun'}),h(PW.StateBadge,{state:'earth'}),h(PW.StateBadge,{state:'none'}))));
+</script>
+</body>
+</html>

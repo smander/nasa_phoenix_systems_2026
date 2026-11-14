@@ -1,0 +1,16 @@
+<!-- @dsCard group="Data" height=260 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Readout — preview</title></head>
+<body>
+<div id="root"></div>
+<script>
+var PW = window.PolarWindow, h = React.createElement;
+ReactDOM.createRoot(document.getElementById('root')).render(h('div',{className:'pw-readouts'},
+ h(PW.Readout,{label:'Sun',value:1.90,decimals:2,signed:true,suffix:'°',unit:'elev',state:'Up',tone:'sun',rows:[['Azimuth','72.7°'],['Terrain there','+2.13°'],['Clearance','−0.23°']]}),
+ h(PW.Readout,{label:'Earth',value:10.28,decimals:2,signed:true,suffix:'°',unit:'elev',state:'In view',tone:'earth',rows:[['Azimuth','352.7°'],['Distance','377,117 km'],['Phase','41% lit']]}),
+ h(PW.Readout,{label:'Energy',value:282,unit:'W/m² avg',caption:'203 kWh/m² this month · longest night 6.2 d'}),
+ h(PW.Readout,{label:'Observer height',value:2,unit:'m',bracket:true,caption:'Raise to 10 m: Earth 75% → 100%'})));
+</script>
+</body>
+</html>
